@@ -3,10 +3,10 @@ import { ArrowRight } from 'lucide-react';
 import heroBackground from '@/assets/hero-background.jpg';
 
 const sectionNav = [
-  { num: '1', label: 'Mission' },
-  { num: '2', label: 'Platform' },
-  { num: '3', label: 'Impact' },
-  { num: '4', label: 'Careers' },
+  { num: '1', label: 'Problem' },
+  { num: '2', label: 'Solution' },
+  { num: '3', label: 'How It Works' },
+  { num: '4', label: 'ROI' },
   { num: '5', label: 'Contact' },
 ];
 
@@ -17,7 +17,7 @@ export const Hero = () => {
       <div className="absolute inset-0 z-0">
         <img
           src={heroBackground}
-          alt="Automation visualization"
+          alt="AI-powered agility visualization"
           className="w-full h-full object-cover opacity-40"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-background/30" />
@@ -34,11 +34,11 @@ export const Hero = () => {
             className="flex-1"
           >
             <h1 className="text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-semibold leading-[1.05] tracking-tight">
-              Accelerating
+              30% Productivity
               <br />
-              Enterprise Agility
+              Improvement
               <br />
-              <span className="text-primary">with AI</span>
+              <span className="text-primary">Guaranteed</span>
             </h1>
           </motion.div>
 
@@ -54,7 +54,7 @@ export const Hero = () => {
               {sectionNav.map((item) => (
                 <a
                   key={item.num}
-                  href={`#${item.label.toLowerCase()}`}
+                  href={`#${item.label.toLowerCase().replace(/\s+/g, '-')}`}
                   className="flex items-center gap-4 group"
                 >
                   <span className="font-mono text-sm text-muted-foreground">{item.num}</span>
@@ -67,9 +67,9 @@ export const Hero = () => {
 
             {/* Description */}
             <p className="text-lg text-foreground/80 leading-relaxed">
-              Automated Agile is transforming how organizations deliver value, 
-              embedding intelligent automation across the entire development lifecycle, 
-              from planning and execution to deployment and operations.
+              Companies know AI can improve software productivity, but there's no scalable, 
+              reliable way to apply it. Automated Agile provides that approach—30% productivity 
+              improvement guaranteed, or you get half your money back.
             </p>
           </motion.div>
         </div>
@@ -81,8 +81,8 @@ export const Hero = () => {
           transition={{ duration: 0.8, delay: 0.4, ease: 'easeOut' }}
           className="mt-12"
         >
-          <a href="#mission" className="btn-primary">
-            Discover More
+          <a href="#contact" className="btn-primary">
+            Start Validation
             <ArrowRight size={18} />
           </a>
         </motion.div>
@@ -96,9 +96,9 @@ export const Hero = () => {
         className="relative z-10 container mx-auto px-6 lg:px-12 pb-8"
       >
         <div className="flex items-center gap-4 font-mono text-xs text-muted-foreground uppercase tracking-wider">
-          <span>NEXT GEN 2024</span>
+          <span>EARLY ADOPTER 2026</span>
           <span className="text-primary">—</span>
-          <span>AUTONOMOUS WORKFLOWS</span>
+          <span>AI-POWERED AGILITY</span>
         </div>
       </motion.div>
     </section>

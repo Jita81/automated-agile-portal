@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
+import logo from '@/assets/logo.png';
 
 const navItems = [
-  { label: 'Mission', href: '#mission' },
-  { label: 'Platform', href: '#platform' },
-  { label: 'Impact', href: '#impact' },
-  { label: 'Careers', href: '#careers' },
+  { label: 'Problem', href: '#problem' },
+  { label: 'Solution', href: '#solution' },
+  { label: 'How It Works', href: '#how-it-works' },
+  { label: 'ROI', href: '#roi' },
   { label: 'Contact', href: '#contact' },
 ];
 
@@ -31,8 +32,9 @@ export const Header = () => {
       <div className="container mx-auto px-6 lg:px-12">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <a href="#" className="flex items-center gap-2">
-            <span className="text-xl font-semibold tracking-tight">AUTOMATED AGILE</span>
+          <a href="#" className="flex items-center gap-3">
+            <img src={logo} alt="Automated Agile" className="h-10 w-auto" />
+            <span className="text-xl font-semibold tracking-tight hidden sm:block">AutomatedAgile</span>
           </a>
 
           {/* Desktop Navigation */}
