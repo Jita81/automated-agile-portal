@@ -19,7 +19,7 @@ export const Footer = () => {
           </p>
 
           {/* Social */}
-          <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
+          <a href="https://www.linkedin.com/company/automatedagile/" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-foreground transition-colors">
             <Linkedin size={24} />
           </a>
         </div>
