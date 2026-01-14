@@ -89,13 +89,13 @@ export const ContactSection = () => {
               </p>
 
               <div className="flex flex-col gap-4">
-                <a href="mailto:contact@automatedagile.com" className="btn-primary justify-center">
+                <a href="mailto:Paul@AutomatedAgile.co.uk" className="btn-primary justify-center">
                   <Mail size={18} />
-                  Schedule Conversation
+                  Email Paul
                 </a>
-                <a href="#" className="btn-outline justify-center">
+                <a href="https://calendly.com/paul-automatedagile/30min" target="_blank" rel="noopener noreferrer" className="btn-outline justify-center">
                   <Calendar size={18} />
-                  Book a Call
+                  Book a 30-Min Call
                 </a>
               </div>
             </div>
