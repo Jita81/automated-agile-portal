@@ -1,26 +1,24 @@
 import { Header } from '@/components/Header';
 import { Hero } from '@/components/Hero';
-import { MissionSection } from '@/components/MissionSection';
-import { PlatformSection } from '@/components/PlatformSection';
-import { ImpactSection } from '@/components/ImpactSection';
-import { CareersSection } from '@/components/CareersSection';
+import { ProblemSection } from '@/components/ProblemSection';
+import { SolutionSection } from '@/components/SolutionSection';
+import { HowItWorksSection } from '@/components/HowItWorksSection';
+import { ROISection } from '@/components/ROISection';
 import { ContactSection } from '@/components/ContactSection';
 import { Footer } from '@/components/Footer';
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-background">
+    <main className="min-h-screen bg-background text-foreground">
       <Header />
-      <main>
-        <Hero />
-        <MissionSection />
-        <PlatformSection />
-        <ImpactSection />
-        <CareersSection />
-        <ContactSection />
-      </main>
+      <Hero />
+      <ProblemSection />
+      <SolutionSection />
+      <HowItWorksSection />
+      <ROISection />
+      <ContactSection />
       <Footer />
-    </div>
+    </main>
   );
 };
 
