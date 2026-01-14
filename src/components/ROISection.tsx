@@ -82,11 +82,11 @@ export const ROISection = () => {
               </div>
               <div className="flex justify-between items-center py-3 border-b border-border">
                 <span className="text-muted-foreground">3-year total benefit</span>
-                <span className="text-xl font-semibold">£580,000</span>
+                <span className="text-xl font-semibold">£400,000</span>
               </div>
               <div className="flex justify-between items-center py-3">
                 <span className="text-muted-foreground">3-year ROI</span>
-                <span className="text-3xl font-bold text-primary">314%</span>
+                <span className="text-3xl font-bold text-primary">286%</span>
               </div>
             </div>
           </div>
