@@ -27,7 +27,6 @@ const phases = [
     description: 'Implement full methodology with guaranteed 30% minimum improvement.',
     items: [
       '3-person coaching team embedded with your organization',
-      '2 developers, 1 business analyst',
       'Work alongside your teams, teaching methodology',
     ],
     timeline: [
