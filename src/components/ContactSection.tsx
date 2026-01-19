@@ -5,7 +5,7 @@ const steps = [
   { step: 'Step 1', title: 'Initial Conversation', duration: '20-30 minutes', description: 'Discuss your productivity challenges and assess potential fit.' },
   { step: 'Step 2', title: 'Formal Proposal', description: 'Detailed validation plan for your context with timeline and commercial terms.' },
   { step: 'Step 3', title: 'Two-Week Validation', price: '£15,000', description: 'Baseline measurement, methodology demonstration, clear recommendation.' },
-  { step: 'Step 4', title: 'Three-Month Engagement', price: '£125,000', description: 'Full implementation with guaranteed 30% minimum improvement.' },
+  { step: 'Step 4', title: 'Three-Month Engagement', price: '£200,000', description: 'Full implementation with guaranteed 30% minimum improvement.' },
 ];
 
 export const ContactSection = () => {
@@ -72,15 +72,15 @@ export const ContactSection = () => {
                 </div>
                 <div className="flex justify-between items-center py-3 border-b border-border">
                   <span className="text-muted-foreground">Three-Month Engagement</span>
-                  <span className="font-semibold">£125,000</span>
+                  <span className="font-semibold">£200,000</span>
                 </div>
                 <div className="flex justify-between items-center py-3 border-b border-border">
                   <span className="font-semibold">Total Investment</span>
-                  <span className="text-2xl font-bold text-primary">£140,000</span>
+                  <span className="text-2xl font-bold text-primary">£215,000</span>
                 </div>
                 <div className="flex justify-between items-center py-3">
                   <span className="text-muted-foreground">Payback Period</span>
-                  <span className="font-semibold">6-12 months</span>
+                  <span className="font-semibold">8-16 months</span>
                 </div>
               </div>
 

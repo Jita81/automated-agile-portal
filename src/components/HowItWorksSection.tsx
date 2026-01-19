@@ -23,7 +23,7 @@ const phases = [
   {
     phase: 'Phase 2',
     title: 'Three-Month Engagement',
-    price: '£125,000',
+    price: '£200,000',
     description: 'Implement full methodology with guaranteed 30% minimum improvement.',
     items: [
       '3-person coaching team embedded with your organization',
@@ -146,7 +146,7 @@ export const HowItWorksSection = () => {
                 <div>
                   <h4 className="font-mono text-sm uppercase tracking-wider mb-2 text-foreground">If &lt;30%</h4>
                   <p className="text-sm">
-                    £62,500 refund (50% of £125,000 engagement fee) within 30 days. 
+                    £100,000 refund (50% of £200,000 engagement fee) within 30 days. 
                     This protects your investment while ensuring we're accountable for results.
                   </p>
                 </div>
