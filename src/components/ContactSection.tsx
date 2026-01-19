@@ -5,7 +5,7 @@ const steps = [
   { step: 'Step 1', title: 'Initial Conversation', duration: '20-30 minutes', description: 'Discuss your productivity challenges and assess potential fit.' },
   { step: 'Step 2', title: 'Formal Proposal', description: 'Detailed validation plan for your context with timeline and commercial terms.' },
   { step: 'Step 3', title: 'Two-Week Validation', price: '£15,000', description: 'Baseline measurement, methodology demonstration, clear recommendation.' },
-  { step: 'Step 4', title: 'Three-Month Engagement', price: '£200,000', description: 'Full implementation with guaranteed 30% minimum improvement.' },
+  { step: 'Step 4', title: 'Three-Month Pilot', price: '£200,000', description: 'Single delivery team pilot with guaranteed 30% improvement. Option to continue or expand after.' },
 ];
 
 export const ContactSection = () => {
@@ -71,7 +71,7 @@ export const ContactSection = () => {
                   <span className="font-semibold">£15,000</span>
                 </div>
                 <div className="flex justify-between items-center py-3 border-b border-border">
-                  <span className="text-muted-foreground">Three-Month Engagement</span>
+                  <span className="text-muted-foreground">Three-Month Pilot (single team)</span>
                   <span className="font-semibold">£200,000</span>
                 </div>
                 <div className="flex justify-between items-center py-3 border-b border-border">

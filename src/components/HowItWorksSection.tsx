@@ -22,12 +22,13 @@ const phases = [
   },
   {
     phase: 'Phase 2',
-    title: 'Three-Month Engagement',
+    title: 'Three-Month Pilot',
     price: '£200,000',
-    description: 'Implement full methodology with guaranteed 30% minimum improvement.',
+    description: 'Pilot engagement for a single delivery team with guaranteed 30% minimum improvement. May continue or expand to operationalise success upon request.',
     items: [
       '3-person coaching team embedded with your organization',
       'Work alongside your teams, teaching methodology',
+      'Option to continue or expand after pilot completion',
     ],
     timeline: [
       { weeks: 'Weeks 1-4', label: 'Foundation (training and initial implementation)' },
