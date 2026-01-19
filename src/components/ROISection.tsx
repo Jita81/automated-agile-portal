@@ -67,30 +67,8 @@ export const ROISection = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-100px' }}
           transition={{ duration: 0.6 }}
-          className="grid lg:grid-cols-2 gap-8 lg:gap-12 mb-16"
+          className="mb-16"
         >
-          <div className="bg-card border border-primary/30 p-8">
-            <h3 className="text-xl font-semibold mb-6">Example: 12-Person Team</h3>
-            <div className="space-y-4">
-              <div className="flex justify-between items-center py-3 border-b border-border">
-                <span className="text-muted-foreground">Annual benefit</span>
-                <span className="text-2xl font-bold text-primary">£180,000</span>
-              </div>
-              <div className="flex justify-between items-center py-3 border-b border-border">
-                <span className="text-muted-foreground">Year 1 net (after £200k investment)</span>
-                <span className="text-xl font-semibold">-£20,000</span>
-              </div>
-              <div className="flex justify-between items-center py-3 border-b border-border">
-                <span className="text-muted-foreground">3-year total benefit</span>
-                <span className="text-xl font-semibold">£340,000</span>
-              </div>
-              <div className="flex justify-between items-center py-3">
-                <span className="text-muted-foreground">3-year ROI</span>
-                <span className="text-3xl font-bold text-primary">170%</span>
-              </div>
-            </div>
-          </div>
-
           <div className="bg-card border border-border p-8">
             <h3 className="text-xl font-semibold mb-6">Early Adopter Pricing</h3>
             <div className="space-y-4 mb-6">
