@@ -62,7 +62,7 @@ export const SolutionSection = () => {
               <h4 className="font-semibold mb-2">What We Guarantee</h4>
               <p className="text-muted-foreground">
                 30% minimum productivity improvement, measured using rigorous baseline-to-endpoint 
-                comparison—or you get 50% of your engagement fee back (£62,500).
+                comparison—or you get 50% of your engagement fee back (£100,000).
               </p>
             </div>
           </motion.div>
