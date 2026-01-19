@@ -3,10 +3,10 @@ import { SectionHeader } from './SectionHeader';
 import { TrendingUp, Zap, Users, Clock } from 'lucide-react';
 
 const roiData = [
-  { teamSize: '10 people', payroll: '£500,000', value: '£150,000', payback: '10.5 mo', yearlyBenefit: '£150,000/year' },
-  { teamSize: '12 people', payroll: '£600,000', value: '£180,000', payback: '8.75 mo', yearlyBenefit: '£180,000/year' },
-  { teamSize: '15 people', payroll: '£750,000', value: '£225,000', payback: '7 mo', yearlyBenefit: '£225,000/year' },
-  { teamSize: '20 people', payroll: '£1,000,000', value: '£300,000', payback: '5.25 mo', yearlyBenefit: '£300,000/year' },
+  { teamSize: '10 people', payroll: '£500,000', value: '£150,000', payback: '16 mo', yearlyBenefit: '£150,000/year' },
+  { teamSize: '12 people', payroll: '£600,000', value: '£180,000', payback: '13.3 mo', yearlyBenefit: '£180,000/year' },
+  { teamSize: '15 people', payroll: '£750,000', value: '£225,000', payback: '10.7 mo', yearlyBenefit: '£225,000/year' },
+  { teamSize: '20 people', payroll: '£1,000,000', value: '£300,000', payback: '8 mo', yearlyBenefit: '£300,000/year' },
 ];
 
 const strategicBenefits = [
@@ -57,7 +57,7 @@ export const ROISection = () => {
             </tbody>
           </table>
           <p className="text-sm text-muted-foreground mt-4">
-            Investment: £140,000 total (£15k validation + £125k engagement)
+            Investment: £200,000 for a 3-month engagement
           </p>
         </motion.div>
 
@@ -77,16 +77,16 @@ export const ROISection = () => {
                 <span className="text-2xl font-bold text-primary">£180,000</span>
               </div>
               <div className="flex justify-between items-center py-3 border-b border-border">
-                <span className="text-muted-foreground">Year 1 net (after £140k investment)</span>
-                <span className="text-xl font-semibold">£40,000</span>
+                <span className="text-muted-foreground">Year 1 net (after £200k investment)</span>
+                <span className="text-xl font-semibold">-£20,000</span>
               </div>
               <div className="flex justify-between items-center py-3 border-b border-border">
                 <span className="text-muted-foreground">3-year total benefit</span>
-                <span className="text-xl font-semibold">£400,000</span>
+                <span className="text-xl font-semibold">£340,000</span>
               </div>
               <div className="flex justify-between items-center py-3">
                 <span className="text-muted-foreground">3-year ROI</span>
-                <span className="text-3xl font-bold text-primary">286%</span>
+                <span className="text-3xl font-bold text-primary">170%</span>
               </div>
             </div>
           </div>
@@ -96,19 +96,19 @@ export const ROISection = () => {
             <div className="space-y-4 mb-6">
               <div className="flex justify-between items-center">
                 <span className="text-muted-foreground">Current (Early Adopter)</span>
-                <span className="text-2xl font-bold">£125,000</span>
+                <span className="text-2xl font-bold">£200,000</span>
               </div>
               <div className="flex justify-between items-center">
                 <span className="text-muted-foreground">Future (Standard)</span>
-                <span className="text-xl text-muted-foreground line-through">£175-200,000</span>
+                <span className="text-xl text-muted-foreground line-through">£250,000</span>
               </div>
               <div className="flex justify-between items-center pt-4 border-t border-border">
                 <span className="font-semibold">Your Savings</span>
-                <span className="text-xl font-bold text-primary">£50-75,000</span>
+                <span className="text-xl font-bold text-primary">£50,000</span>
               </div>
             </div>
             <p className="text-sm text-muted-foreground">
-              First-time commercial offering in 2026. You'd be among the first 10-12 organizations—first-mover 
+              3-month engagement. You'd be among the first 10-12 organizations—first-mover 
               advantage at discounted pricing.
             </p>
           </div>
