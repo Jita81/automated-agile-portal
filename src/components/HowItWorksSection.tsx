@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { SectionHeader } from './SectionHeader';
-import { ArrowRight, Check, Shield } from 'lucide-react';
+import { ArrowRight, Check, Shield, ExternalLink } from 'lucide-react';
 
 const phases = [
   {
@@ -38,6 +38,19 @@ const phases = [
   },
 ];
 
+const methodologies = [
+  {
+    title: 'Context Engineering',
+    description: 'Optimise how information flows to your teams. By engineering the right context at the right time, we eliminate waste from misunderstanding, rework, and waiting.',
+    link: 'https://contextengineering.team/',
+  },
+  {
+    title: 'Software Manufacturing',
+    description: 'Apply proven manufacturing principles to software delivery. Systematic approaches to reduce variability, increase predictability, and accelerate throughput.',
+    link: 'https://softwaremanufacturing.team/',
+  },
+];
+
 export const HowItWorksSection = () => {
   return (
     <section id="how-it-works" className="py-24 lg:py-32">
@@ -47,6 +60,37 @@ export const HowItWorksSection = () => {
           title="How It Works"
           subtitle="A de-risked, phased approach to guaranteed productivity improvement."
         />
+
+        {/* Methodology Overview */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-100px' }}
+          transition={{ duration: 0.6 }}
+          className="mb-16"
+        >
+          <h3 className="font-mono text-sm uppercase tracking-wider text-primary mb-6">Our Approach</h3>
+          <p className="text-lg text-muted-foreground mb-8 max-w-3xl">
+            Automated Agile combines two powerful methodologies to accelerate your team's productivity:
+          </p>
+          <div className="grid md:grid-cols-2 gap-6">
+            {methodologies.map((method) => (
+              <a
+                key={method.title}
+                href={method.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-card border border-border p-6 hover:border-primary/50 transition-colors group"
+              >
+                <div className="flex items-start justify-between mb-3">
+                  <h4 className="text-xl font-semibold group-hover:text-primary transition-colors">{method.title}</h4>
+                  <ExternalLink className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
+                </div>
+                <p className="text-muted-foreground">{method.description}</p>
+              </a>
+            ))}
+          </div>
+        </motion.div>
 
         <div className="space-y-12 mb-16">
           {phases.map((phase, index) => (
