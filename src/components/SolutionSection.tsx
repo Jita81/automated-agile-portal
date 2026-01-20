@@ -36,26 +36,44 @@ export const SolutionSection = () => {
               reliable way to apply AI that consistently delivers results.
             </p>
             
-            <div className="space-y-4 mb-8">
-              <h4 className="font-mono text-sm uppercase tracking-wider text-muted-foreground">The Methodology</h4>
-              <ul className="space-y-3 text-foreground">
-                <li className="flex items-start gap-3">
-                  <span className="text-primary mt-1">•</span>
-                  Automated Agile principles driven by context engineering
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="text-primary mt-1">•</span>
-                  Applied systematically across delivery, particularly in the 70-80%
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="text-primary mt-1">•</span>
-                  Proven over 2+ years of development and refinement
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="text-primary mt-1">•</span>
-                  Validated across multiple contexts
-                </li>
-              </ul>
+            <div className="space-y-6 mb-8">
+              <div className="space-y-3">
+                <h4 className="font-mono text-sm uppercase tracking-wider text-muted-foreground">Context Engineering</h4>
+                <p className="text-muted-foreground leading-relaxed">
+                  The foundation of our methodology. Context engineering ensures AI tools receive precisely the right 
+                  information at the right time, enabling consistent, high-quality outputs at scale.
+                </p>
+                <a 
+                  href="https://contextengineering.team/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 text-primary hover:underline text-sm font-medium"
+                >
+                  Learn about Context Engineering
+                  <ArrowRight size={14} />
+                </a>
+              </div>
+
+              <div className="space-y-3">
+                <h4 className="font-mono text-sm uppercase tracking-wider text-muted-foreground">Software Manufacturing</h4>
+                <p className="text-muted-foreground leading-relaxed">
+                  We apply manufacturing principles to software delivery—systematically automating the 70-80% 
+                  of cycle time spent on coordination, requirements, and process overhead.
+                </p>
+                <a 
+                  href="https://softwaremanufacturing.team/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 text-primary hover:underline text-sm font-medium"
+                >
+                  Learn about Software Manufacturing
+                  <ArrowRight size={14} />
+                </a>
+              </div>
+
+              <div className="pt-2 text-sm text-muted-foreground">
+                <span className="font-medium text-foreground">Proven over 2+ years</span> of development and validated across multiple contexts.
+              </div>
             </div>
 
             <div className="bg-primary/10 p-6 border-l-4 border-primary">
