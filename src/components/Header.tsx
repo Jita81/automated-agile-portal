@@ -54,7 +54,7 @@ export const Header = () => {
           {/* Logo */}
           <a href="#" className="flex items-center gap-3">
             <img src={logo} alt="Automated Agile" className="h-10 w-auto" />
-            <span className="text-xl font-semibold tracking-tight hidden sm:block">AutomatedAgile</span>
+            <span className="text-xl font-semibold tracking-tight hidden sm:block">Automated Agile</span>
           </a>
 
           {/* Desktop Navigation */}
