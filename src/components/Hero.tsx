@@ -63,66 +63,72 @@ export const Hero = () => {
 
       {/* Content */}
       <div className="relative z-10 container mx-auto px-6 lg:px-12 pt-32 pb-12 flex-1 flex flex-col">
-        <div className="flex-1 flex flex-col max-w-3xl">
-          {/* Headline */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: 'easeOut' }}
-          >
-            <h1 className="text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-semibold leading-[1.05] tracking-tight">
-              30% Productivity
-              <br />
-              Improvement
-              <br />
-              <span className="text-primary">Guaranteed</span>
-            </h1>
-          </motion.div>
+        <div className="flex-1 flex flex-col lg:flex-row">
+          {/* Left column - Headline, nav, description */}
+          <div className="lg:w-1/2 flex flex-col">
+            {/* Headline */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, ease: 'easeOut' }}
+            >
+              <h1 className="text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-semibold leading-[1.05] tracking-tight">
+                30% Productivity
+                <br />
+                Improvement
+                <br />
+                <span className="text-primary">Guaranteed</span>
+              </h1>
+            </motion.div>
 
-          {/* Section nav + Description - left aligned under headline */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2, ease: 'easeOut' }}
-            className="mt-10 flex flex-col lg:flex-row gap-8 lg:gap-16"
-          >
-            {/* Section Navigation */}
-            <nav className="flex flex-row flex-wrap lg:flex-col gap-x-6 gap-y-2">
-              {sectionNav.map((item) => (
-                <a
-                  key={item.num}
-                  href={`#${item.label.toLowerCase().replace(/\s+/g, '-')}`}
-                  className="flex items-center gap-2 group"
-                >
-                  <span className="font-mono text-sm text-muted-foreground">{item.num}</span>
-                  <span className="text-muted-foreground group-hover:text-foreground transition-colors duration-300">
-                    {item.label}
-                  </span>
-                </a>
-              ))}
-            </nav>
+            {/* Section nav + Description - left aligned under headline */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2, ease: 'easeOut' }}
+              className="mt-10 flex flex-col sm:flex-row gap-8 sm:gap-12"
+            >
+              {/* Section Navigation */}
+              <nav className="flex flex-row flex-wrap sm:flex-col gap-x-6 gap-y-2">
+                {sectionNav.map((item) => (
+                  <a
+                    key={item.num}
+                    href={`#${item.label.toLowerCase().replace(/\s+/g, '-')}`}
+                    className="flex items-center gap-2 group"
+                  >
+                    <span className="font-mono text-sm text-muted-foreground">{item.num}</span>
+                    <span className="text-muted-foreground group-hover:text-foreground transition-colors duration-300">
+                      {item.label}
+                    </span>
+                  </a>
+                ))}
+              </nav>
 
-            {/* Description */}
-            <p className="text-lg text-foreground/80 leading-relaxed max-w-md">
-              Companies know AI can improve software productivity, but there's no scalable, 
-              reliable way to apply it. Automated Agile provides that approach—30% productivity 
-              improvement guaranteed, or you get half your money back.
-            </p>
-          </motion.div>
+              {/* Description */}
+              <p className="text-lg text-foreground/80 leading-relaxed max-w-sm">
+                Companies know AI can improve software productivity, but there's no scalable, 
+                reliable way to apply it. Automated Agile provides that approach—30% productivity 
+                improvement guaranteed, or you get half your money back.
+              </p>
+            </motion.div>
+
+            {/* CTA */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.4, ease: 'easeOut' }}
+              className="mt-12"
+            >
+              <a href="#contact" className="btn-primary">
+                Start Validation
+                <ArrowRight size={18} />
+              </a>
+            </motion.div>
+          </div>
+          
+          {/* Right column - empty space for floating card */}
+          <div className="hidden lg:block lg:w-1/2" />
         </div>
-
-        {/* CTA */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4, ease: 'easeOut' }}
-          className="mt-12"
-        >
-          <a href="#contact" className="btn-primary">
-            Start Validation
-            <ArrowRight size={18} />
-          </a>
-        </motion.div>
       </div>
 
       {/* Bottom tech label */}
