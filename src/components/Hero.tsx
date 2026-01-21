@@ -38,7 +38,7 @@ export const Hero = () => {
           <p className="text-sm text-foreground mb-4 leading-relaxed">
             Automated Agile is built on two proven methodologies:
           </p>
-          <div className="space-y-2">
+          <div className="space-y-2 mb-4">
             <a 
               href="https://contextengineering.team/" 
               target="_blank" 
@@ -58,6 +58,13 @@ export const Hero = () => {
               <ArrowRight size={14} className="text-primary group-hover:translate-x-1 transition-transform" />
             </a>
           </div>
+          <a 
+            href="#contact" 
+            className="w-full inline-flex items-center justify-center gap-2 bg-primary text-primary-foreground px-4 py-2 text-sm font-medium hover:bg-primary/90 transition-colors"
+          >
+            Get Started
+            <ArrowRight size={14} />
+          </a>
         </div>
       </motion.div>
 
