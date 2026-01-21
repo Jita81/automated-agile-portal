@@ -63,13 +63,12 @@ export const Hero = () => {
 
       {/* Content */}
       <div className="relative z-10 container mx-auto px-6 lg:px-12 pt-32 pb-12 flex-1 flex flex-col">
-        <div className="flex-1 flex flex-col lg:flex-row gap-12 lg:gap-24">
-          {/* Left column - Headline */}
+        <div className="flex-1 flex flex-col max-w-3xl">
+          {/* Headline */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: 'easeOut' }}
-            className="flex-1"
           >
             <h1 className="text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-semibold leading-[1.05] tracking-tight">
               30% Productivity
@@ -80,20 +79,20 @@ export const Hero = () => {
             </h1>
           </motion.div>
 
-          {/* Right column - Section nav + Description */}
+          {/* Section nav + Description - left aligned under headline */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2, ease: 'easeOut' }}
-            className="lg:w-[400px] flex flex-col gap-8 lg:mt-48"
+            className="mt-10 flex flex-col lg:flex-row gap-8 lg:gap-16"
           >
             {/* Section Navigation */}
-            <nav className="flex flex-col gap-2">
+            <nav className="flex flex-row flex-wrap lg:flex-col gap-x-6 gap-y-2">
               {sectionNav.map((item) => (
                 <a
                   key={item.num}
                   href={`#${item.label.toLowerCase().replace(/\s+/g, '-')}`}
-                  className="flex items-center gap-4 group"
+                  className="flex items-center gap-2 group"
                 >
                   <span className="font-mono text-sm text-muted-foreground">{item.num}</span>
                   <span className="text-muted-foreground group-hover:text-foreground transition-colors duration-300">
@@ -104,34 +103,11 @@ export const Hero = () => {
             </nav>
 
             {/* Description */}
-            <p className="text-lg text-foreground/80 leading-relaxed">
+            <p className="text-lg text-foreground/80 leading-relaxed max-w-md">
               Companies know AI can improve software productivity, but there's no scalable, 
               reliable way to apply it. Automated Agile provides that approach—30% productivity 
               improvement guaranteed, or you get half your money back.
             </p>
-
-            {/* Mobile methodology links */}
-            <div className="md:hidden space-y-2">
-              <p className="text-sm text-muted-foreground">Built on:</p>
-              <div className="flex flex-wrap gap-2">
-                <a 
-                  href="https://contextengineering.team/" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1 text-sm text-primary hover:underline"
-                >
-                  Context Engineering <ArrowRight size={12} />
-                </a>
-                <a 
-                  href="https://softwaremanufacturing.team/" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1 text-sm text-primary hover:underline"
-                >
-                  Software Manufacturing <ArrowRight size={12} />
-                </a>
-              </div>
-            </div>
           </motion.div>
         </div>
 
