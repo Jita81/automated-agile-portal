@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,90 +6,52 @@
 
 @layer base {
   :root {
-    /* Core palette - Industrial minimalist */
-    --background: 0 0% 92%;
-    --foreground: 0 0% 8%;
-    
-    --card: 0 0% 95%;
-    --card-foreground: 0 0% 8%;
-    
-    --popover: 0 0% 95%;
-    --popover-foreground: 0 0% 8%;
-    
-    /* Brand - Teal accent */
-    --primary: 174 62% 47%;
-    --primary-foreground: 0 0% 100%;
-    
-    --secondary: 0 0% 88%;
-    --secondary-foreground: 0 0% 8%;
-    
-    --muted: 0 0% 85%;
-    --muted-foreground: 0 0% 40%;
-    
-    --accent: 174 62% 47%;
-    --accent-foreground: 0 0% 100%;
-    
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 100%;
-    
-    --border: 0 0% 82%;
-    --input: 0 0% 82%;
-    --ring: 174 62% 47%;
-    
-    --radius: 0.25rem;
-    
-    /* Custom design tokens */
-    --font-heading: 'Space Grotesk', sans-serif;
-    --font-mono: 'JetBrains Mono', monospace;
-    
-    /* Sidebar defaults */
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 174 62% 47%;
-  }
+    /* atoms.co dark — jet black, warm off-white */
+    --background: 0 0% 4%;
+    --foreground: 36 15% 88%;
 
-  .dark {
-    --background: 0 0% 6%;
-    --foreground: 0 0% 95%;
-    
-    --card: 0 0% 10%;
-    --card-foreground: 0 0% 95%;
-    
-    --popover: 0 0% 10%;
-    --popover-foreground: 0 0% 95%;
-    
-    --primary: 174 62% 47%;
-    --primary-foreground: 0 0% 100%;
-    
-    --secondary: 0 0% 15%;
-    --secondary-foreground: 0 0% 95%;
-    
-    --muted: 0 0% 18%;
-    --muted-foreground: 0 0% 60%;
-    
-    --accent: 174 62% 47%;
-    --accent-foreground: 0 0% 100%;
-    
-    --destructive: 0 62% 30%;
-    --destructive-foreground: 0 0% 95%;
-    
-    --border: 0 0% 20%;
-    --input: 0 0% 20%;
-    --ring: 174 62% 47%;
-    
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 174 62% 47%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 174 62% 47%;
+    --card: 0 0% 6%;
+    --card-foreground: 36 15% 88%;
+
+    --popover: 0 0% 6%;
+    --popover-foreground: 36 15% 88%;
+
+    /* Primary = off-white (atoms uses no strong accent colour) */
+    --primary: 36 15% 88%;
+    --primary-foreground: 0 0% 4%;
+
+    --secondary: 0 0% 9%;
+    --secondary-foreground: 36 15% 88%;
+
+    --muted: 0 0% 12%;
+    --muted-foreground: 36 8% 55%;
+
+    --accent: 36 15% 88%;
+    --accent-foreground: 0 0% 4%;
+
+    --destructive: 0 62% 50%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 0 0% 13%;
+    --input: 0 0% 13%;
+    --ring: 36 15% 88%;
+
+    --radius: 0rem;
+
+    /* Typography */
+    --font-serif: 'EB Garamond', Georgia, serif;
+    --font-sans: 'Space Grotesk', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+
+    /* Sidebar defaults */
+    --sidebar-background: 0 0% 4%;
+    --sidebar-foreground: 36 15% 88%;
+    --sidebar-primary: 36 15% 88%;
+    --sidebar-primary-foreground: 0 0% 4%;
+    --sidebar-accent: 0 0% 9%;
+    --sidebar-accent-foreground: 36 15% 88%;
+    --sidebar-border: 0 0% 13%;
+    --sidebar-ring: 36 15% 88%;
   }
 }
 
@@ -97,84 +59,78 @@
   * {
     @apply border-border;
   }
-  
+
   html {
     scroll-behavior: smooth;
+    background-color: hsl(0 0% 4%);
   }
-  
+
   body {
     @apply bg-background text-foreground antialiased;
-    font-family: var(--font-heading);
+    font-family: var(--font-sans);
+    font-size: 17px;
+    line-height: 1.7;
   }
-  
+
   h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-heading);
-    @apply font-semibold tracking-tight;
+    font-family: var(--font-serif);
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    line-height: 1.15;
   }
-  
-  .font-mono {
-    font-family: var(--font-mono);
+
+  p {
+    font-family: var(--font-sans);
+    color: hsl(var(--muted-foreground));
+  }
+
+  strong {
+    color: hsl(var(--foreground));
+    font-weight: 500;
   }
 }
 
 @layer components {
-  .section-number {
-    @apply font-mono text-sm text-muted-foreground;
+  /* Atoms-style section number */
+  .section-num {
+    @apply font-mono text-xs tracking-widest text-muted-foreground uppercase mb-6 block;
   }
-  
-  .section-title {
-    @apply text-4xl md:text-5xl lg:text-6xl font-semibold leading-tight;
-  }
-  
-  .section-subtitle {
-    @apply text-lg md:text-xl text-muted-foreground max-w-2xl;
-  }
-  
-  .nav-link {
-    @apply relative font-mono text-sm text-muted-foreground hover:text-foreground transition-colors duration-300;
-  }
-  
-  .nav-link::after {
-    content: '';
-    @apply absolute bottom-0 left-0 w-0 h-px bg-primary transition-all duration-300;
-  }
-  
-  .nav-link:hover::after {
-    @apply w-full;
-  }
-  
-  .btn-primary {
-    @apply inline-flex items-center gap-2 px-6 py-3 bg-foreground text-background font-medium 
-           hover:bg-primary hover:text-primary-foreground transition-all duration-300;
-  }
-  
-  .btn-outline {
-    @apply inline-flex items-center gap-2 px-6 py-3 border border-foreground text-foreground font-medium 
-           hover:bg-foreground hover:text-background transition-all duration-300;
-  }
-  
-  .card-hover {
-    @apply transition-all duration-500 hover:translate-y-[-4px];
-  }
-}
 
-@layer utilities {
-  .text-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary to-foreground;
+  /* Large serif editorial heading */
+  .editorial-h2 {
+    font-family: var(--font-serif);
+    @apply text-4xl md:text-5xl lg:text-6xl font-normal text-foreground leading-tight mb-8;
   }
-  
-  .animate-fade-up {
-    animation: fadeUp 0.6s ease-out forwards;
+
+  /* Pull-quote style */
+  .pull-quote {
+    font-family: var(--font-serif);
+    @apply text-2xl md:text-3xl lg:text-4xl font-normal italic text-foreground leading-snug;
   }
-  
-  @keyframes fadeUp {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+
+  .nav-link {
+    @apply font-sans text-sm text-muted-foreground hover:text-foreground transition-colors duration-200;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center gap-2 px-6 py-3 bg-foreground text-background font-medium text-sm
+           hover:bg-foreground/80 transition-all duration-200;
+  }
+
+  .btn-outline {
+    @apply inline-flex items-center gap-2 px-6 py-3 border border-foreground/30 text-foreground font-medium text-sm
+           hover:border-foreground transition-all duration-200;
+  }
+
+  /* Thin rule divider */
+  .section-rule {
+    @apply border-t border-border;
+  }
+
+  .prose-editorial {
+    @apply text-base md:text-lg leading-relaxed text-muted-foreground max-w-2xl;
+  }
+  .prose-editorial strong {
+    color: hsl(var(--foreground));
   }
 }
