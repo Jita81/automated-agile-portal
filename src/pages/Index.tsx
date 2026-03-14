@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Header } from '@/components/Header';
 import { Hero } from '@/components/Hero';
 import { VisionSection } from '@/components/VisionSection';
@@ -7,8 +8,12 @@ import { HowItWorksSection } from '@/components/HowItWorksSection';
 import { ROISection } from '@/components/ROISection';
 import { ContactSection } from '@/components/ContactSection';
 import { Footer } from '@/components/Footer';
+import { DownloadModal } from '@/components/DownloadModal';
+import { DownloadContextFAB } from '@/components/DownloadContextFAB';
 
 const Index = () => {
+  const [modalOpen, setModalOpen] = useState(false);
+
   return (
     <main className="min-h-screen bg-background text-foreground">
       <Header />
@@ -20,8 +25,10 @@ const Index = () => {
         <HowItWorksSection />
         <ROISection />
         <ContactSection />
-        <Footer />
+        <Footer onDownloadClick={() => setModalOpen(true)} />
       </div>
+      <DownloadContextFAB onOpen={() => setModalOpen(true)} />
+      <DownloadModal open={modalOpen} onClose={() => setModalOpen(false)} />
     </main>
   );
 };
