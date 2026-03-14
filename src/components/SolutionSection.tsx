@@ -1,129 +1,84 @@
 import { motion } from 'framer-motion';
-import { SectionHeader } from './SectionHeader';
-import { ArrowRight, Check, X } from 'lucide-react';
-
-const notList = [
-  'Ad-hoc AI tool implementation',
-  'Generic productivity consulting',
-  '"Try it and see what happens"',
-];
-
-const yesList = [
-  'Systematic methodology that scales',
-  'Consistent, reliable results',
-  'Performance guarantee with real protection',
-];
+import { ArrowUpRight } from 'lucide-react';
 
 export const SolutionSection = () => {
   return (
-    <section id="solution" className="py-24 lg:py-32 bg-secondary/30">
-      <div className="container mx-auto px-6 lg:px-12">
-        <SectionHeader
-          number="02"
-          title="Our Solution"
-          subtitle="Automated Agile Methodology"
-        />
+    <section id="solution" className="border-t border-border">
+      <div className="max-w-6xl mx-auto px-6 lg:px-10 py-24 lg:py-32">
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-80px' }}
+          transition={{ duration: 0.8 }}
+        >
+          <span className="section-num">03</span>
+          <h2 className="editorial-h2">Our Methodology</h2>
 
-        <div className="grid lg:grid-cols-2 gap-16 lg:gap-24">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-100px' }}
-            transition={{ duration: 0.6 }}
-          >
-            <p className="text-xl text-foreground leading-relaxed mb-8">
-              We've developed a proprietary approach that provides what's missing: a scalable, 
-              reliable way to apply AI that consistently delivers results.
-            </p>
-            
-            <div className="space-y-6 mb-8">
-              <div className="space-y-3">
-                <h4 className="font-mono text-sm uppercase tracking-wider text-muted-foreground">Context Engineering</h4>
-                <p className="text-muted-foreground leading-relaxed">
-                  The foundation of our methodology. Context engineering ensures AI tools receive precisely the right 
-                  information at the right time, enabling consistent, high-quality outputs at scale.
-                </p>
-                <a 
-                  href="https://contextengineering.team/" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-primary hover:underline text-sm font-medium"
-                >
-                  Learn about Context Engineering
-                  <ArrowRight size={14} />
-                </a>
-              </div>
-
-              <div className="space-y-3">
-                <h4 className="font-mono text-sm uppercase tracking-wider text-muted-foreground">Software Manufacturing</h4>
-                <p className="text-muted-foreground leading-relaxed">
-                  We apply manufacturing principles to software delivery—systematically automating the 70-80% 
-                  of cycle time spent on coordination, requirements, and process overhead.
-                </p>
-                <a 
-                  href="https://softwaremanufacturing.team/" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-primary hover:underline text-sm font-medium"
-                >
-                  Learn about Software Manufacturing
-                  <ArrowRight size={14} />
-                </a>
-              </div>
-
-              <div className="pt-2 text-sm text-muted-foreground">
-                <span className="font-medium text-foreground">Proven over 2+ years</span> of development and validated across multiple contexts.
-              </div>
-            </div>
-
-            <div className="bg-primary/10 p-6 border-l-4 border-primary">
-              <h4 className="font-semibold mb-2">What We Guarantee</h4>
-              <p className="text-muted-foreground">
-                30% minimum productivity improvement, measured using rigorous baseline-to-endpoint 
-                comparison—or you get 50% of your engagement fee back (£100,000).
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 mb-16">
+            <div className="space-y-5">
+              <p className="prose-editorial">
+                Automated Agile is built on two proven disciplines that, in combination, 
+                create something that neither achieves alone: a complete, scalable, and 
+                measurable approach to AI-powered software productivity.
+              </p>
+              <p className="prose-editorial">
+                We've spent two years developing and validating this methodology. It is not 
+                theory—it is an operational system with a performance guarantee.
               </p>
             </div>
-          </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-100px' }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="space-y-8"
-          >
-            {/* What this is NOT */}
-            <div className="bg-card border border-border p-8">
-              <h4 className="font-mono text-sm uppercase tracking-wider text-destructive mb-6">What This Is Not</h4>
-              <ul className="space-y-4">
-                {notList.map((item) => (
-                  <li key={item} className="flex items-center gap-3 text-muted-foreground">
-                    <X className="w-5 h-5 text-destructive flex-shrink-0" />
-                    {item}
-                  </li>
-                ))}
-              </ul>
+            <div className="space-y-5">
+              <p className="prose-editorial">
+                The engagement model is deliberately phased to de-risk the investment. 
+                A two-week validation comes first—proving the approach works for your 
+                specific context before any major commitment is made.
+              </p>
+              <p className="prose-editorial">
+                The three-month pilot then embeds the methodology inside a single delivery 
+                team, transfers capability permanently, and delivers the guaranteed improvement.
+              </p>
             </div>
+          </div>
 
-            {/* What this IS */}
-            <div className="bg-card border border-primary/30 p-8">
-              <h4 className="font-mono text-sm uppercase tracking-wider text-primary mb-6">What This Is</h4>
-              <ul className="space-y-4">
-                {yesList.map((item) => (
-                  <li key={item} className="flex items-center gap-3 text-foreground">
-                    <Check className="w-5 h-5 text-primary flex-shrink-0" />
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <a href="#contact" className="btn-primary inline-flex">
-              Learn More
-              <ArrowRight size={18} />
-            </a>
-          </motion.div>
-        </div>
+          {/* Two methodology cards */}
+          <div className="grid md:grid-cols-2 gap-px bg-border">
+            {[
+              {
+                num: '01',
+                title: 'Context Engineering',
+                url: 'https://contextengineering.team/',
+                body: 'The foundation of consistent AI output. Context Engineering is the discipline of ensuring AI tools receive precisely the right information at the right time—enabling reliable, high-quality outputs at scale across your entire delivery process.',
+              },
+              {
+                num: '02',
+                title: 'Software Manufacturing',
+                url: 'https://softwaremanufacturing.team/',
+                body: 'Manufacturing principles applied to software delivery. Systematically automating the 70–80% of cycle time lost to coordination, requirements overhead, and process friction—transforming unpredictable delivery into a repeatable production system.',
+              },
+            ].map((item) => (
+              <motion.div
+                key={item.num}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+                className="bg-card p-8 lg:p-10 flex flex-col gap-6"
+              >
+                <span className="font-mono text-xs tracking-widest text-muted-foreground">{item.num}</span>
+                <h3 className="font-serif text-2xl md:text-3xl text-foreground font-normal">{item.title}</h3>
+                <p className="prose-editorial text-sm md:text-base flex-1">{item.body}</p>
+                <a
+                  href={item.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 font-mono text-xs tracking-wider uppercase text-foreground/60 hover:text-foreground transition-colors"
+                >
+                  Learn more <ArrowUpRight size={12} />
+                </a>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
       </div>
     </section>
   );

@@ -1,156 +1,149 @@
 import { motion } from 'framer-motion';
-import { SectionHeader } from './SectionHeader';
-import { ArrowRight, Check, Shield } from 'lucide-react';
 
 const phases = [
   {
-    phase: 'Phase 1',
+    num: '01',
+    phase: 'Phase One',
     title: 'Two-Week Validation',
     price: '£15,000',
-    description: 'Prove this works for YOUR specific context before committing.',
-    items: [
+    description: 'Prove the methodology works for your specific context before any larger commitment.',
+    points: [
       'Measure your current baseline throughput',
-      'Assess your environment and readiness',
-      'Demonstrate methodology application',
-      'Present findings and recommendation',
+      'Assess your environment and team readiness',
+      'Demonstrate the methodology in practice',
+      'Deliver a clear recommendation: proceed or gap analysis',
     ],
     deliverables: [
-      'Baseline Assessment (your current state, measured)',
-      'Improvement Potential (realistic for your context)',
-      'Recommendation (proceed or gap analysis)',
+      'Baseline Assessment — your current state, measured',
+      'Improvement Potential — realistic for your context',
+      'Recommendation — with full commercial transparency',
     ],
   },
   {
-    phase: 'Phase 2',
+    num: '02',
+    phase: 'Phase Two',
     title: 'Three-Month Pilot',
     price: '£200,000',
-    description: 'Pilot engagement for a single delivery team with guaranteed 30% minimum improvement. May continue or expand to operationalise success upon request.',
-    items: [
-      '3-person coaching team embedded with your organization',
-      'Work alongside your teams, teaching methodology',
-      'Option to continue or expand after pilot completion',
+    description: 'A single delivery team. Three months. Guaranteed 30% productivity improvement—or 50% of the fee returned.',
+    points: [
+      '3-person coaching team embedded with your organisation',
+      'Methodology taught, not just applied',
+      'Permanent capability transfer—you own the improvement',
+      'Option to continue or expand to additional teams',
     ],
     timeline: [
-      { weeks: 'Weeks 1-4', label: 'Foundation (training and initial implementation)' },
-      { weeks: 'Weeks 5-8', label: 'Application (teams apply with coaching support)' },
-      { weeks: 'Weeks 9-12', label: 'Optimization (methodology embedded, sustainability)' },
+      { weeks: 'Weeks 1–4', label: 'Foundation — training and initial implementation' },
+      { weeks: 'Weeks 5–8', label: 'Application — teams apply with coaching support' },
+      { weeks: 'Weeks 9–12', label: 'Optimisation — methodology embedded and self-sustaining' },
     ],
   },
 ];
 
 export const HowItWorksSection = () => {
   return (
-    <section id="how-it-works" className="py-24 lg:py-32">
-      <div className="container mx-auto px-6 lg:px-12">
-        <SectionHeader
-          number="03"
-          title="How It Works"
-          subtitle="A de-risked, phased approach to guaranteed productivity improvement."
-        />
+    <section id="how-it-works" className="border-t border-border">
+      <div className="max-w-6xl mx-auto px-6 lg:px-10 py-24 lg:py-32">
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-80px' }}
+          transition={{ duration: 0.8 }}
+          className="mb-16"
+        >
+          <span className="section-num">04</span>
+          <h2 className="editorial-h2">How It Works</h2>
+          <p className="prose-editorial max-w-xl">
+            A phased approach designed to de-risk every step. You validate before you commit. 
+            You own the results permanently.
+          </p>
+        </motion.div>
 
-        <div className="space-y-12 mb-16">
-          {phases.map((phase, index) => (
+        <div className="space-y-px bg-border">
+          {phases.map((phase, i) => (
             <motion.div
-              key={phase.phase}
-              initial={{ opacity: 0, y: 30 }}
+              key={phase.num}
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-100px' }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-              className="bg-card border border-border p-8 lg:p-12"
+              viewport={{ once: true, margin: '-60px' }}
+              transition={{ duration: 0.7, delay: i * 0.1 }}
+              className="bg-background grid lg:grid-cols-3 gap-0"
             >
-              <div className="flex flex-col lg:flex-row lg:items-start gap-8">
-                <div className="lg:w-1/3">
-                  <span className="font-mono text-sm text-primary uppercase tracking-wider">{phase.phase}</span>
-                  <h3 className="text-2xl lg:text-3xl font-semibold mt-2 mb-2">{phase.title}</h3>
-                  <span className="text-3xl font-bold text-primary">{phase.price}</span>
-                  <p className="text-muted-foreground mt-4">{phase.description}</p>
-                </div>
-                
-                <div className="lg:w-2/3 space-y-6">
-                  <div>
-                    <h4 className="font-mono text-sm uppercase tracking-wider text-muted-foreground mb-4">
-                      What Happens
-                    </h4>
+              {/* Left: phase header */}
+              <div className="p-8 lg:p-10 border-r border-border">
+                <span className="font-mono text-xs tracking-widest text-muted-foreground mb-3 block">{phase.phase}</span>
+                <h3 className="font-serif text-2xl md:text-3xl font-normal text-foreground mb-3">{phase.title}</h3>
+                <p className="font-mono text-2xl text-foreground mb-4">{phase.price}</p>
+                <p className="prose-editorial text-sm">{phase.description}</p>
+              </div>
+
+              {/* Middle: what happens */}
+              <div className="p-8 lg:p-10 border-r border-border">
+                <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground mb-6">What happens</p>
+                <ul className="space-y-3">
+                  {phase.points.map((pt) => (
+                    <li key={pt} className="flex items-start gap-3 text-sm text-muted-foreground">
+                      <span className="text-foreground/40 mt-0.5 flex-shrink-0">—</span>
+                      {pt}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Right: deliverables or timeline */}
+              <div className="p-8 lg:p-10">
+                {phase.deliverables && (
+                  <>
+                    <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground mb-6">Deliverables</p>
                     <ul className="space-y-3">
-                      {phase.items.map((item) => (
-                        <li key={item} className="flex items-start gap-3">
-                          <Check className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
-                          <span>{item}</span>
+                      {phase.deliverables.map((d) => (
+                        <li key={d} className="flex items-start gap-3 text-sm text-muted-foreground">
+                          <span className="text-foreground/40 mt-0.5 flex-shrink-0">→</span>
+                          {d}
                         </li>
                       ))}
                     </ul>
-                  </div>
-
-                  {phase.deliverables && (
-                    <div>
-                      <h4 className="font-mono text-sm uppercase tracking-wider text-muted-foreground mb-4">
-                        Deliverables
-                      </h4>
-                      <ul className="space-y-2">
-                        {phase.deliverables.map((item) => (
-                          <li key={item} className="flex items-start gap-3 text-muted-foreground">
-                            <span className="text-primary">→</span>
-                            {item}
-                          </li>
-                        ))}
-                      </ul>
+                  </>
+                )}
+                {phase.timeline && (
+                  <>
+                    <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground mb-6">Timeline</p>
+                    <div className="space-y-4">
+                      {phase.timeline.map((t) => (
+                        <div key={t.weeks}>
+                          <p className="font-mono text-xs text-foreground mb-1">{t.weeks}</p>
+                          <p className="text-sm text-muted-foreground">{t.label}</p>
+                        </div>
+                      ))}
                     </div>
-                  )}
-
-                  {phase.timeline && (
-                    <div>
-                      <h4 className="font-mono text-sm uppercase tracking-wider text-muted-foreground mb-4">
-                        Timeline
-                      </h4>
-                      <div className="space-y-3">
-                        {phase.timeline.map((item) => (
-                          <div key={item.weeks} className="flex items-start gap-4">
-                            <span className="font-mono text-sm text-primary whitespace-nowrap">{item.weeks}</span>
-                            <span className="text-muted-foreground">{item.label}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                </div>
+                  </>
+                )}
               </div>
             </motion.div>
           ))}
         </div>
 
-        {/* Performance Guarantee */}
+        {/* Guarantee block */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-100px' }}
-          transition={{ duration: 0.6 }}
-          className="bg-primary/5 border border-primary/20 p-8 lg:p-12"
+          viewport={{ once: true }}
+          transition={{ duration: 0.7 }}
+          className="mt-px bg-card border-t border-border p-8 lg:p-12 grid lg:grid-cols-2 gap-10"
         >
-          <div className="flex items-start gap-6">
-            <Shield className="w-12 h-12 text-primary flex-shrink-0" />
+          <div>
+            <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground mb-4">The Guarantee</p>
+            <p className="pull-quote text-2xl md:text-3xl mb-4">
+              30% minimum productivity improvement, measured rigorously—or £100,000 returned within 30 days.
+            </p>
+          </div>
+          <div className="space-y-4 text-sm text-muted-foreground">
             <div>
-              <h3 className="text-2xl font-semibold mb-4">Performance Guarantee</h3>
-              <p className="text-lg text-foreground mb-6">
-                30% minimum productivity improvement or 50% fee reduction.
-              </p>
-              <div className="grid md:grid-cols-2 gap-6 text-muted-foreground">
-                <div>
-                  <h4 className="font-mono text-sm uppercase tracking-wider mb-2 text-foreground">How We Measure</h4>
-                  <ul className="space-y-2 text-sm">
-                    <li>• Baseline: Average throughput 4-6 weeks before engagement</li>
-                    <li>• Endpoint: Average throughput final 4-6 weeks of engagement</li>
-                    <li>• Calculation: (Endpoint - Baseline) / Baseline</li>
-                    <li>• Target: ≥30% improvement</li>
-                  </ul>
-                </div>
-                <div>
-                  <h4 className="font-mono text-sm uppercase tracking-wider mb-2 text-foreground">If &lt;30%</h4>
-                  <p className="text-sm">
-                    £100,000 refund (50% of £200,000 engagement fee) within 30 days. 
-                    This protects your investment while ensuring we're accountable for results.
-                  </p>
-                </div>
-              </div>
+              <p className="font-mono text-xs uppercase tracking-widest text-foreground mb-2">Measurement</p>
+              <p>Baseline: average throughput 4–6 weeks before engagement. Endpoint: average throughput in the final 4–6 weeks. Improvement = (Endpoint − Baseline) / Baseline.</p>
+            </div>
+            <div>
+              <p className="font-mono text-xs uppercase tracking-widest text-foreground mb-2">If &lt; 30%</p>
+              <p>£100,000 refund (50% of the £200,000 pilot fee) paid within 30 days. No argument, no caveats.</p>
             </div>
           </div>
         </motion.div>
