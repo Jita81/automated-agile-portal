@@ -1,7 +1,11 @@
-import { Link } from 'lucide-react';
+import { Link, Download } from 'lucide-react';
 import logo from '@/assets/logo.png';
 
-export const Footer = () => {
+interface FooterProps {
+  onDownload?: () => void;
+}
+
+export const Footer = ({ onDownload }: FooterProps) => {
   return (
     <footer className="border-t border-border">
       <div className="max-w-6xl mx-auto px-6 lg:px-10 py-10">
@@ -16,6 +20,15 @@ export const Footer = () => {
           </p>
 
           <div className="flex items-center gap-6">
+            {onDownload && (
+              <button
+                onClick={onDownload}
+                className="flex items-center gap-1.5 font-mono text-xs text-muted-foreground hover:text-foreground transition-colors"
+              >
+                <Download size={12} strokeWidth={1.5} />
+                Download
+              </button>
+            )}
             <a
               href="https://www.linkedin.com/company/automatedagile/"
               target="_blank"

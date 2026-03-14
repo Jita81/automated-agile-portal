@@ -24,7 +24,7 @@ const Index = () => {
         <HowItWorksSection />
         <ROISection />
         <ContactSection />
-        <Footer />
+        <Footer onDownload={() => setDownloadOpen(true)} />
       </div>
       <DownloadModal open={downloadOpen} onClose={() => setDownloadOpen(false)} />
     </main>
