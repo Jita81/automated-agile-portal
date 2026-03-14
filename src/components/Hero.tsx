@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import heroBackground from '@/assets/hero-background.jpg';
+import { Download } from 'lucide-react';
 
 export const Hero = () => {
   return (
