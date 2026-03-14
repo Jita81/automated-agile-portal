@@ -3,35 +3,29 @@ import logo from '@/assets/logo.png';
 
 export const Footer = () => {
   return (
-    <footer className="py-16 border-t border-border">
-      <div className="container mx-auto px-6 lg:px-12">
-        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-8 mb-12">
-          {/* Brand */}
+    <footer className="border-t border-border">
+      <div className="max-w-6xl mx-auto px-6 lg:px-10 py-12">
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
           <div className="flex items-center gap-3">
-            <img src={logo} alt="Automated Agile" className="h-10 w-auto" />
-            <span className="text-xl font-semibold tracking-tight">AutomatedAgile</span>
+            <img src={logo} alt="Automated Agile" className="h-6 w-auto opacity-70" />
+            <span className="font-mono text-xs tracking-widest uppercase text-muted-foreground">Automated Agile</span>
           </div>
 
-          {/* Tagline */}
-          <p className="text-muted-foreground text-sm max-w-md">
-            30% Software Productivity Improvement—Guaranteed. A scalable, reliable approach 
-            to AI-powered productivity.
+          <p className="text-xs text-muted-foreground font-mono max-w-xs">
+            30% Software Productivity Improvement — Guaranteed.
           </p>
 
-          {/* Social */}
-          <a href="https://www.linkedin.com/company/automatedagile/" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-foreground transition-colors">
-            <Linkedin size={24} />
-          </a>
-        </div>
-
-        {/* Bottom */}
-        <div className="pt-8 border-t border-border flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-muted-foreground text-sm">
-            © 2026 Automated Agile. All rights reserved.
-          </p>
-          <p className="font-mono text-xs text-muted-foreground">
-            AI-Powered Agility
-          </p>
+          <div className="flex items-center gap-6">
+            <a
+              href="https://www.linkedin.com/company/automatedagile/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-muted-foreground hover:text-foreground transition-colors"
+            >
+              <Linkedin size={18} />
+            </a>
+            <span className="font-mono text-xs text-muted-foreground">© 2026</span>
+          </div>
         </div>
       </div>
     </footer>

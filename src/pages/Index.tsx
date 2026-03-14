@@ -1,5 +1,6 @@
 import { Header } from '@/components/Header';
 import { Hero } from '@/components/Hero';
+import { VisionSection } from '@/components/VisionSection';
 import { ProblemSection } from '@/components/ProblemSection';
 import { SolutionSection } from '@/components/SolutionSection';
 import { HowItWorksSection } from '@/components/HowItWorksSection';
@@ -11,13 +12,16 @@ const Index = () => {
   return (
     <main className="min-h-screen bg-background text-foreground">
       <Header />
-      <Hero />
-      <ProblemSection />
-      <SolutionSection />
-      <HowItWorksSection />
-      <ROISection />
-      <ContactSection />
-      <Footer />
+      <div className="pt-16">
+        <Hero />
+        <VisionSection />
+        <ProblemSection />
+        <SolutionSection />
+        <HowItWorksSection />
+        <ROISection />
+        <ContactSection />
+        <Footer />
+      </div>
     </main>
   );
 };
