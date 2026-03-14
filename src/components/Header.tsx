@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Menu, X } from 'lucide-react';
+import { SlidersHorizontal, Minus } from 'lucide-react';
 import logo from '@/assets/logo.png';
 
 const navItems = [
@@ -46,7 +46,7 @@ export const Header = () => {
           </nav>
 
           <button onClick={() => setMobileOpen(!mobileOpen)} className="md:hidden p-1 text-foreground/70 hover:text-foreground" aria-label="Toggle menu">
-            {mobileOpen ? <X size={20} /> : <Menu size={20} />}
+            {mobileOpen ? <Minus size={18} strokeWidth={1.5} /> : <SlidersHorizontal size={18} strokeWidth={1.5} />}
           </button>
         </div>
       </div>

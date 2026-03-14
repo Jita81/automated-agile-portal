@@ -1,4 +1,4 @@
-import { Linkedin } from 'lucide-react';
+import { Link } from 'lucide-react';
 import logo from '@/assets/logo.png';
 
 export const Footer = () => {
@@ -22,7 +22,7 @@ export const Footer = () => {
               rel="noopener noreferrer"
               className="text-muted-foreground hover:text-foreground transition-colors"
             >
-              <Linkedin size={16} />
+              <Link size={14} strokeWidth={1.5} />
             </a>
             <span className="font-mono text-xs text-muted-foreground">© 2026</span>
           </div>
