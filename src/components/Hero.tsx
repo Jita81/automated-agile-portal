@@ -10,7 +10,7 @@ export const Hero = () => {
           src={heroBackground}
           alt="Context Engineering Platform"
           className="w-full h-full object-cover"
-          style={{ filter: 'brightness(0.7)' }}
+          style={{ filter: 'sepia(30%) brightness(0.45)' }}
         />
         <div className="absolute inset-0 bg-gradient-to-b from-background/10 via-transparent to-background" />
       </div>
