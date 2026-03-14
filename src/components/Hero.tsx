@@ -1,7 +1,12 @@
 import { motion } from 'framer-motion';
 import heroBackground from '@/assets/hero-background.jpg';
+import { Download } from 'lucide-react';
 
-export const Hero = () => {
+interface HeroProps {
+  onDownload: () => void;
+}
+
+export const Hero = ({ onDownload }: HeroProps) => {
   return (
     <section className="relative flex flex-col">
       {/* Full-bleed image */}
@@ -41,12 +46,16 @@ export const Hero = () => {
             </p>
           </div>
 
-          <div className="mt-10 flex flex-wrap gap-6 font-mono text-xs tracking-widest uppercase text-muted-foreground">
-            <span>Version 1.0</span>
-            <span className="text-foreground/20">—</span>
-            <span>March 2026</span>
-            <span className="text-foreground/20">—</span>
-            <span>Part of the Automated Agile Framework</span>
+          <div className="mt-10 flex flex-col sm:flex-row sm:items-center gap-6">
+            <button onClick={onDownload} className="btn-outline inline-flex items-center gap-2 w-fit">
+              <Download size={13} strokeWidth={1.5} />
+              Download as Markdown
+            </button>
+            <div className="flex flex-wrap gap-6 font-mono text-xs tracking-widest uppercase text-muted-foreground">
+              <span>Version 1.0</span>
+              <span className="text-foreground/20">—</span>
+              <span>March 2026</span>
+            </div>
           </div>
         </motion.div>
       </div>
