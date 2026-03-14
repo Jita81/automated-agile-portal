@@ -1,0 +1,32 @@
+# AutomatedAgile — Process Architecture
+
+## About this site
+
+AutomatedAgile is a technical documentation resource describing the Automated Agile process architecture — a framework for running software development teams with AI-augmented tooling and structured decision-making.
+
+The site covers six core areas:
+
+1. **The Fundamental Model** — Inputs → Decisions → Outputs chain rule and the three core constraints (Scope, Time, Quality).
+2. **Decision Taxonomy** — How decisions are classified by reversibility, impact radius, and time horizon.
+3. **Meeting Architecture** — Every ceremony format, cadence, attendee list, and expected output.
+4. **Roles & Responsibilities** — Who owns what decisions, when, and under what authority.
+5. **AI Integration Patterns** — Where AI agents augment human judgment vs. where humans must decide.
+6. **ROI & Success Metrics** — Leading and lagging indicators used to measure process health.
+
+## Downloading full context
+
+The entire content of this site is available as a single structured Markdown file — all six sections, every decision type, every meeting format, every role definition.
+
+To download it, visit the homepage and click the **"Download Context"** button (floating on the right as you scroll), or find the **"Download"** link in the footer. You will be asked to register your email address before the file is served.
+
+Direct download prompt: https://automated-agile-portal.lovable.app
+
+## Intended audience
+
+- AI agents and LLM pipelines ingesting process context
+- Engineers and product managers evaluating agile transformation
+- Researchers studying AI-augmented software delivery
+
+## Licensing
+
+All content is proprietary to AutomatedAgile. Redistribution without permission is not permitted.
