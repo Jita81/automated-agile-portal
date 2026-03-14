@@ -1,4 +1,4 @@
-import { Linkedin } from 'lucide-react';
+import { Link } from 'lucide-react';
 import logo from '@/assets/logo.png';
 
 export const Footer = () => {

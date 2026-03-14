@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Menu, X } from 'lucide-react';
+import { SlidersHorizontal, Minus } from 'lucide-react';
 import logo from '@/assets/logo.png';
 
 const navItems = [
