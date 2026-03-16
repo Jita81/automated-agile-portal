@@ -8,19 +8,32 @@ interface EmailEntry {
   created_at: string;
 }
 
-const AdminLogin = ({ onLogin }: { onLogin: () => void }) => {
+const AdminLogin = ({ onLogin }: { onLogin: (password: string) => void }) => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (password === ADMIN_PASSWORD) {
-      sessionStorage.setItem('aa_admin', '1');
-      onLogin();
-    } else {
+    setLoading(true);
+    setError('');
+
+    // Validate password against the server — no client-side password check
+    const { data, error: fnError } = await supabase.functions.invoke('admin-get-emails', {
+      headers: { 'x-admin-password': password },
+    });
+
+    if (fnError || data?.error === 'Unauthorized') {
       setError('Incorrect password.');
       setPassword('');
+      setLoading(false);
+      return;
     }
+
+    // Store password in sessionStorage so dashboard can reuse it
+    sessionStorage.setItem('aa_admin_pw', password);
+    onLogin(password);
+    setLoading(false);
   };
 
   return (
@@ -49,8 +62,14 @@ const AdminLogin = ({ onLogin }: { onLogin: () => void }) => {
             {error && <p className="font-mono text-xs text-destructive mt-2">{error}</p>}
           </div>
 
-          <button type="submit" className="btn-primary w-full justify-center">
-            <span className="font-mono text-xs tracking-widest uppercase">Enter</span>
+          <button
+            type="submit"
+            disabled={loading}
+            className="btn-primary w-full justify-center disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <span className="font-mono text-xs tracking-widest uppercase">
+              {loading ? 'Checking...' : 'Enter'}
+            </span>
           </button>
         </form>
       </div>
@@ -58,16 +77,17 @@ const AdminLogin = ({ onLogin }: { onLogin: () => void }) => {
   );
 };
 
-const AdminDashboard = ({ onLogout }: { onLogout: () => void }) => {
+const AdminDashboard = ({ password, onLogout }: { password: string; onLogout: () => void }) => {
   const [emails, setEmails] = useState<EmailEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
   useEffect(() => {
     const fetchEmails = async () => {
-      // Use service role via edge function to bypass RLS
-      const { data, error } = await supabase.functions.invoke('admin-get-emails');
-      if (error) {
+      const { data, error: fnError } = await supabase.functions.invoke('admin-get-emails', {
+        headers: { 'x-admin-password': password },
+      });
+      if (fnError || data?.error) {
         setError('Failed to load emails.');
       } else {
         setEmails(data?.emails ?? []);
@@ -75,7 +95,7 @@ const AdminDashboard = ({ onLogout }: { onLogout: () => void }) => {
       setLoading(false);
     };
     fetchEmails();
-  }, []);
+  }, [password]);
 
   const formatDate = (iso: string) => {
     return new Date(iso).toLocaleDateString('en-GB', {
@@ -86,7 +106,6 @@ const AdminDashboard = ({ onLogout }: { onLogout: () => void }) => {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      {/* Header */}
       <header className="border-b border-border">
         <div className="max-w-5xl mx-auto px-6 lg:px-10 h-14 flex items-center justify-between">
           <div className="flex items-center gap-4">
@@ -105,7 +124,6 @@ const AdminDashboard = ({ onLogout }: { onLogout: () => void }) => {
       </header>
 
       <div className="max-w-5xl mx-auto px-6 lg:px-10 py-16">
-        {/* Stats */}
         <div className="mb-12 grid grid-cols-2 gap-px bg-border w-fit">
           <div className="bg-background px-8 py-6">
             <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground mb-2">Total registrations</p>
@@ -119,7 +137,6 @@ const AdminDashboard = ({ onLogout }: { onLogout: () => void }) => {
           </div>
         </div>
 
-        {/* Table */}
         {loading ? (
           <p className="font-mono text-xs text-muted-foreground">Loading...</p>
         ) : error ? (
@@ -155,16 +172,18 @@ const AdminDashboard = ({ onLogout }: { onLogout: () => void }) => {
 };
 
 const Admin = () => {
-  const [authed, setAuthed] = useState(() => sessionStorage.getItem('aa_admin') === '1');
+  const [password, setPassword] = useState<string | null>(
+    () => sessionStorage.getItem('aa_admin_pw')
+  );
 
-  const handleLogin = () => setAuthed(true);
+  const handleLogin = (pw: string) => setPassword(pw);
   const handleLogout = () => {
-    sessionStorage.removeItem('aa_admin');
-    setAuthed(false);
+    sessionStorage.removeItem('aa_admin_pw');
+    setPassword(null);
   };
 
-  if (!authed) return <AdminLogin onLogin={handleLogin} />;
-  return <AdminDashboard onLogout={handleLogout} />;
+  if (!password) return <AdminLogin onLogin={handleLogin} />;
+  return <AdminDashboard password={password} onLogout={handleLogout} />;
 };
 
 export default Admin;
