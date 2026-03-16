@@ -2,8 +2,6 @@ import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { Lock, LogOut, Mail, Calendar } from 'lucide-react';
 
-const ADMIN_PASSWORD = 'Remember1me';
-
 interface EmailEntry {
   id: string;
   email: string;
