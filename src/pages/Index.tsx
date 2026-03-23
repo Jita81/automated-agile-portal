@@ -32,7 +32,7 @@ const Index = () => {
       </div>
       <DownloadContextFAB onOpen={() => setModalOpen(true)} />
       <DownloadModal open={modalOpen} onClose={() => setModalOpen(false)} />
-      <AskWebsiteWidget />
+      {CHAT_WIDGET_ENABLED && <AskWebsiteWidget />}
     </main>
   );
 };
