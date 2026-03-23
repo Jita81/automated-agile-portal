@@ -9,6 +9,8 @@ const navItems = [
   { label: 'Meetings', href: '#meetings' },
   { label: 'Self-Curation', href: '#self-curation' },
   { label: 'Integrations', href: '#integrations' },
+  { label: 'Context Engineering', href: 'https://contextengineering.team/', external: true },
+  { label: 'Software Manufacturing', href: 'https://softwaremanufacturing.team/', external: true },
 ];
 
 export const Header = () => {
