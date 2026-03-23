@@ -41,9 +41,9 @@ export const Header = () => {
 
           <nav className="hidden md:flex items-center gap-8">
             {navItems.map((item) => (
-              <a key={item.label} href={item.href} className="nav-link" onClick={(e) => handleNav(e, item.href)}>
-                {item.label}
-              </a>
+              item.external
+                ? <a key={item.label} href={item.href} className="nav-link" target="_blank" rel="noopener noreferrer">{item.label}</a>
+                : <a key={item.label} href={item.href} className="nav-link" onClick={(e) => handleNav(e, item.href)}>{item.label}</a>
             ))}
           </nav>
 
