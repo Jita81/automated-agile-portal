@@ -30,6 +30,33 @@
     <!-- homepage or fetch /llms.txt for a plain-text index and download instructions. -->
     <meta name="llms-txt" content="/llms.txt" />
     <link rel="alternate" type="text/plain" title="LLM-friendly site index" href="/llms.txt" />
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml" />
+
+    <!-- AI Plugin Manifest for agent discovery -->
+    <link rel="manifest" href="/.well-known/ai-plugin.json" type="application/json" />
+
+    <!-- JSON-LD structured data for agent/search readability -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Automated Agile",
+      "url": "https://automated-agile-portal.lovable.app/",
+      "description": "A complete framework for AI-powered software delivery. Automated Agile is a Context Engineering Platform covering process architecture, decision taxonomy, meeting formats, self-curation mechanisms, and integrations for consistent, predictable software manufacturing.",
+      "publisher": {
+        "@type": "Organization",
+        "name": "Automated Agile",
+        "url": "https://automated-agile-portal.lovable.app/",
+        "logo": "https://automated-agile-portal.lovable.app/favicon.png",
+        "sameAs": ["https://www.linkedin.com/company/automatedagile/"]
+      },
+      "about": {
+        "@type": "Thing",
+        "name": "Automated Agile Process Architecture",
+        "description": "Version 1.0 (March 2026). Six-section framework: The Model, Decision Taxonomy, Meeting Formats, Self-Curation Mechanisms, Integrations, and ROI. Every activity answers: does the right person have the right context to make the right decision at the right time?"
+      }
+    }
+    </script>
   </head>
 
   <body>

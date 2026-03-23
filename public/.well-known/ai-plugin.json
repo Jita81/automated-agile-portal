@@ -1,0 +1,16 @@
+{
+  "schema_version": "v1",
+  "name_for_human": "Automated Agile",
+  "name_for_model": "automated_agile",
+  "description_for_human": "Automated Agile — a complete framework for AI-powered software delivery. Download the full process architecture as a single Markdown file.",
+  "description_for_model": "This plugin represents the Automated Agile Context Engineering Platform. The site documents a process architecture framework for AI-powered software delivery, covering six sections: the model, decision taxonomy, meeting formats, self-curation mechanisms, integrations, and ROI. The full framework document is available for download as a Markdown file at the homepage. The site also exposes a machine-readable index at /llms.txt.",
+  "auth": {
+    "type": "none"
+  },
+  "api": {
+    "type": "none"
+  },
+  "logo_url": "https://automated-agile-portal.lovable.app/favicon.png",
+  "contact_email": "hello@automatedagile.co.uk",
+  "legal_info_url": "https://automated-agile-portal.lovable.app/"
+}
