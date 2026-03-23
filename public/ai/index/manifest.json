@@ -1,0 +1,19 @@
+{
+  "version": "1.0",
+  "site": "Automated Agile",
+  "created": "2026-03-23",
+  "chunks_file": "/ai/index/chunks.json",
+  "embeddings_file": "/ai/index/embeddings.json",
+  "total_chunks": 16,
+  "embedding_model": "Xenova/bge-small-en-v1.5",
+  "embedding_dim": 384,
+  "sections": [
+    { "id": "hero", "title": "Overview", "chunk_ids": ["hero-1"] },
+    { "id": "model", "title": "The Fundamental Model", "chunk_ids": ["model-primitives", "model-chain-rule", "model-quarterly-cadence"] },
+    { "id": "decisions", "title": "The Decision Taxonomy", "chunk_ids": ["decisions-strategic", "decisions-discovery", "decisions-delivery"] },
+    { "id": "meetings", "title": "The Meeting Architecture", "chunk_ids": ["meetings-overview", "meetings-m1-m2-m3", "meetings-m4-m5-m6-m7"] },
+    { "id": "self-curation", "title": "The Self-Curating Context Model", "chunk_ids": ["self-curation-loop", "self-curation-codebase"] },
+    { "id": "integrations", "title": "Integration Architecture", "chunk_ids": ["integrations-inputs", "integrations-chat-calls", "integrations-pm-source-control"] },
+    { "id": "sign-off", "title": "Output & Sign-Off Matrix", "chunk_ids": ["signoff-matrix"] }
+  ]
+}
