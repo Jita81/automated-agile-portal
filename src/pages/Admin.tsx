@@ -8,7 +8,9 @@ interface EmailEntry {
   created_at: string;
 }
 
-const AdminLogin = ({ onLogin }: { onLogin: (password: string) => void }) => {
+const SESSION_KEY = 'aa_admin_token';
+
+const AdminLogin = ({ onLogin }: { onLogin: (token: string) => void }) => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -18,21 +20,21 @@ const AdminLogin = ({ onLogin }: { onLogin: (password: string) => void }) => {
     setLoading(true);
     setError('');
 
-    // Validate password against the server — no client-side password check
+    // Send password once — server validates and returns a short-lived signed token
     const { data, error: fnError } = await supabase.functions.invoke('admin-get-emails', {
       headers: { 'x-admin-password': password },
     });
 
-    if (fnError || data?.error === 'Unauthorized') {
+    if (fnError || !data?.token) {
       setError('Incorrect password.');
       setPassword('');
       setLoading(false);
       return;
     }
 
-    // Store password in sessionStorage so dashboard can reuse it
-    sessionStorage.setItem('aa_admin_pw', password);
-    onLogin(password);
+    // Store only the short-lived token, never the password
+    sessionStorage.setItem(SESSION_KEY, data.token);
+    onLogin(data.token);
     setLoading(false);
   };
 
@@ -77,7 +79,7 @@ const AdminLogin = ({ onLogin }: { onLogin: (password: string) => void }) => {
   );
 };
 
-const AdminDashboard = ({ password, onLogout }: { password: string; onLogout: () => void }) => {
+const AdminDashboard = ({ token, onLogout }: { token: string; onLogout: () => void }) => {
   const [emails, setEmails] = useState<EmailEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -85,9 +87,15 @@ const AdminDashboard = ({ password, onLogout }: { password: string; onLogout: ()
   useEffect(() => {
     const fetchEmails = async () => {
       const { data, error: fnError } = await supabase.functions.invoke('admin-get-emails', {
-        headers: { 'x-admin-password': password },
+        headers: { 'Authorization': `Bearer ${token}` },
       });
       if (fnError || data?.error) {
+        if (data?.error === 'Unauthorized') {
+          // Token expired — force re-login
+          sessionStorage.removeItem(SESSION_KEY);
+          onLogout();
+          return;
+        }
         setError('Failed to load emails.');
       } else {
         setEmails(data?.emails ?? []);
@@ -95,7 +103,7 @@ const AdminDashboard = ({ password, onLogout }: { password: string; onLogout: ()
       setLoading(false);
     };
     fetchEmails();
-  }, [password]);
+  }, [token, onLogout]);
 
   const formatDate = (iso: string) => {
     return new Date(iso).toLocaleDateString('en-GB', {
@@ -172,18 +180,18 @@ const AdminDashboard = ({ password, onLogout }: { password: string; onLogout: ()
 };
 
 const Admin = () => {
-  const [password, setPassword] = useState<string | null>(
-    () => sessionStorage.getItem('aa_admin_pw')
+  const [token, setToken] = useState<string | null>(
+    () => sessionStorage.getItem(SESSION_KEY)
   );
 
-  const handleLogin = (pw: string) => setPassword(pw);
+  const handleLogin = (t: string) => setToken(t);
   const handleLogout = () => {
-    sessionStorage.removeItem('aa_admin_pw');
-    setPassword(null);
+    sessionStorage.removeItem(SESSION_KEY);
+    setToken(null);
   };
 
-  if (!password) return <AdminLogin onLogin={handleLogin} />;
-  return <AdminDashboard password={password} onLogout={handleLogout} />;
+  if (!token) return <AdminLogin onLogin={handleLogin} />;
+  return <AdminDashboard token={token} onLogout={handleLogout} />;
 };
 
 export default Admin;
