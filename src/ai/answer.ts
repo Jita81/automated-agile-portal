@@ -25,9 +25,15 @@ export async function generateAnswer(
     return { answer: NO_ANSWER_PHRASE, sources: [], noAnswer: true };
   }
 
-  console.log('[AskWebsite] Loading LLM pipeline...');
-  const llm = await getLLM(onProgress);
-  console.log('[AskWebsite] LLM loaded, building prompt for question:', question);
+  console.log('[AskWebsite] Step 1: Loading LLM pipeline...');
+  let llm: any;
+  try {
+    llm = await getLLM(onProgress);
+    console.log('[AskWebsite] Step 2: LLM loaded OK. Type:', typeof llm);
+  } catch (err: any) {
+    console.error('[AskWebsite] FAILED to load LLM:', err?.message ?? err);
+    throw err;
+  }
 
   // Build the user message content with the context inline
   const contextBlocks = chunks
@@ -38,43 +44,43 @@ export async function generateAnswer(
 
   const userContent = `Website context:\n${contextBlocks}\n\nQuestion: ${question}`;
 
-  // Use chat message format for instruct models
-  const messages = [
-    { role: 'system', content: buildSystemMessage() },
-    { role: 'user', content: userContent },
-  ];
+  // Try plain-string format first (more compatible across model versions)
+  const plainPrompt = `${buildSystemMessage()}\n\n${userContent}\n\nAnswer:`;
 
-  console.log('[AskWebsite] Calling LLM with chat messages...');
+  console.log('[AskWebsite] Step 3: Calling LLM. Prompt length:', plainPrompt.length, 'chars');
 
   let result: any;
   try {
-    result = await llm(messages, {
+    result = await llm(plainPrompt, {
       max_new_tokens: 300,
       temperature: 0.1,
       repetition_penalty: 1.1,
       do_sample: false,
     });
-  } catch (err) {
-    console.error('[AskWebsite] LLM pipeline call threw an error:', err);
+    console.log('[AskWebsite] Step 4: LLM call succeeded. Result type:', typeof result, '| Array?', Array.isArray(result));
+  } catch (err: any) {
+    console.error('[AskWebsite] FAILED during LLM call:', err?.message ?? err, err);
     throw err;
   }
 
-  console.log('[AskWebsite] Raw LLM result:', JSON.stringify(result?.[0]?.generated_text));
+  console.log('[AskWebsite] Step 5: Raw result[0]:', JSON.stringify(result?.[0]));
 
-  // Instruct models return generated_text as an array of chat message objects
+  // Extract generated text
   let generated: string = '';
   const raw = result?.[0]?.generated_text;
+  console.log('[AskWebsite] Step 6: raw generated_text type:', typeof raw, '| isArray:', Array.isArray(raw));
+
   if (typeof raw === 'string') {
-    // Plain-string fallback: extract after "Answer:" marker
+    // Strip the prompt prefix, keep only the new tokens after "Answer:"
     generated = raw.split('Answer:').pop()?.trim() ?? raw.trim();
     console.log('[AskWebsite] Parsed plain-string answer:', generated);
   } else if (Array.isArray(raw)) {
     // Chat message format — take the last assistant message
     const lastMsg = [...raw].reverse().find((m: any) => m.role === 'assistant');
     generated = lastMsg?.content?.trim() ?? '';
-    console.log('[AskWebsite] Parsed chat message answer:', generated);
+    console.log('[AskWebsite] Parsed chat-array answer:', generated);
   } else {
-    console.warn('[AskWebsite] Unexpected result format:', typeof raw, raw);
+    console.warn('[AskWebsite] UNEXPECTED result format. typeof raw:', typeof raw, '| raw:', raw);
   }
 
   const noAnswer =
