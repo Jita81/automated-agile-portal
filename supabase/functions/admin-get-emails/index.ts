@@ -46,7 +46,10 @@ function safeEqual(a: string, b: string): boolean {
 }
 
 async function getSigningKey(): Promise<CryptoKey> {
-  const secret = Deno.env.get('ADMIN_JWT_SECRET') ?? '';
+  const secret = Deno.env.get('ADMIN_JWT_SECRET');
+  if (!secret) {
+    throw new Error('ADMIN_JWT_SECRET is not configured');
+  }
   return await crypto.subtle.importKey(
     'raw',
     new TextEncoder().encode(secret),
