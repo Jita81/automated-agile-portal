@@ -5,6 +5,7 @@ import { checkCapability } from '@/ai/capability';
 import { prepareIndex } from '@/ai/retrieve';
 import { retrieveTopK } from '@/ai/retrieve';
 import { generateAnswer, AnswerResult } from '@/ai/answer';
+import { getLLM } from '@/ai/loadModel';
 import { Chunk } from '@/ai/loadIndex';
 
 // ─── Types ──────────────────────────────────────────────────────────────────
