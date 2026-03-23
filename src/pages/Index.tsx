@@ -10,6 +10,7 @@ import { ContactSection } from '@/components/ContactSection';
 import { Footer } from '@/components/Footer';
 import { DownloadModal } from '@/components/DownloadModal';
 import { DownloadContextFAB } from '@/components/DownloadContextFAB';
+import { AskWebsiteWidget } from '@/components/AskWebsiteWidget';
 
 const Index = () => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -29,6 +30,7 @@ const Index = () => {
       </div>
       <DownloadContextFAB onOpen={() => setModalOpen(true)} />
       <DownloadModal open={modalOpen} onClose={() => setModalOpen(false)} />
+      <AskWebsiteWidget />
     </main>
   );
 };
