@@ -63,9 +63,9 @@ export const Header = () => {
           >
             <nav className="max-w-6xl mx-auto px-6 py-6 flex flex-col gap-5">
               {navItems.map((item) => (
-                <a key={item.label} href={item.href} className="nav-link text-base" onClick={(e) => handleNav(e, item.href)}>
-                  {item.label}
-                </a>
+                item.external
+                  ? <a key={item.label} href={item.href} className="nav-link text-base" target="_blank" rel="noopener noreferrer">{item.label}</a>
+                  : <a key={item.label} href={item.href} className="nav-link text-base" onClick={(e) => handleNav(e, item.href)}>{item.label}</a>
               ))}
             </nav>
           </motion.div>
