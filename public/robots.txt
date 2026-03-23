@@ -12,3 +12,6 @@ Allow: /
 
 User-agent: *
 Allow: /
+
+Sitemap: https://automated-agile-portal.lovable.app/sitemap.xml
+
