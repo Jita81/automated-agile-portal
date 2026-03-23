@@ -12,6 +12,8 @@ import { DownloadModal } from '@/components/DownloadModal';
 import { DownloadContextFAB } from '@/components/DownloadContextFAB';
 import { AskWebsiteWidget } from '@/components/AskWebsiteWidget';
 
+const CHAT_WIDGET_ENABLED = false;
+
 const Index = () => {
   const [modalOpen, setModalOpen] = useState(false);
 
@@ -30,7 +32,7 @@ const Index = () => {
       </div>
       <DownloadContextFAB onOpen={() => setModalOpen(true)} />
       <DownloadModal open={modalOpen} onClose={() => setModalOpen(false)} />
-      <AskWebsiteWidget />
+      {CHAT_WIDGET_ENABLED && <AskWebsiteWidget />}
     </main>
   );
 };

@@ -4,6 +4,7 @@ import { create, verify, getNumericDate } from 'https://deno.land/x/djwt@v3.0.2/
 const ALLOWED_ORIGINS = [
   'https://automated-agile-portal.lovable.app',
   'https://id-preview--9852b81a-f584-41ef-9f13-bf871be18f33.lovable.app',
+  'https://9852b81a-f584-41ef-9f13-bf871be18f33.lovableproject.com',
 ];
 
 function getCorsHeaders(req: Request): Record<string, string> {
