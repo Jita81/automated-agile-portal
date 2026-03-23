@@ -5,6 +5,7 @@ import { checkCapability } from '@/ai/capability';
 import { prepareIndex } from '@/ai/retrieve';
 import { retrieveTopK } from '@/ai/retrieve';
 import { generateAnswer, AnswerResult } from '@/ai/answer';
+import { getLLM } from '@/ai/loadModel';
 import { Chunk } from '@/ai/loadIndex';
 
 // ─── Types ──────────────────────────────────────────────────────────────────
@@ -80,15 +81,23 @@ export function AskWebsiteWidget() {
 
     try {
       const onProgress = (p: any) => {
-        if (p?.file) {
+        if (p?.status === 'progress' && p?.progress != null) {
+          const file = p.file?.split('/').pop() ?? 'model';
+          setLoadProgress(`Downloading ${file}: ${Math.round(p.progress)}%`);
+        } else if (p?.file) {
           setLoadProgress(`Loading ${p.file.split('/').pop() ?? 'model'}…`);
-        } else if (p?.status === 'progress' && p?.progress != null) {
-          setLoadProgress(`Downloading model: ${Math.round(p.progress)}%`);
         }
       };
 
+      // Step 1: load chunk index + embedder
+      setLoadProgress('Loading index and embedder…');
       const chunks = await prepareIndex(onProgress);
       indexRef.current = chunks;
+
+      // Step 2: preload the LLM so users see download progress here
+      setLoadProgress('Downloading AI model (first visit only, ~600 MB)…');
+      await getLLM(onProgress);
+
       setLoadProgress('');
       setWidgetState('ready');
     } catch (err) {
