@@ -6,20 +6,31 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-admin-password',
 };
 
-// In-memory rate limiter (resets on cold start, sufficient for low-traffic admin endpoint)
-const attempts = new Map<string, { count: number; resetAt: number }>();
 const MAX_ATTEMPTS = 10;
-const WINDOW_MS = 15 * 60 * 1000; // 15 minutes
+const WINDOW_MINUTES = 15;
 
-function isRateLimited(ip: string): boolean {
-  const now = Date.now();
-  const entry = attempts.get(ip);
-  if (!entry || now > entry.resetAt) {
-    attempts.set(ip, { count: 1, resetAt: now + WINDOW_MS });
-    return false;
+/**
+ * Resolve the real client IP using infrastructure-injected headers.
+ * Priority: CF-Connecting-IP (Cloudflare, cannot be spoofed) →
+ *           x-real-ip (reverse proxy) →
+ *           rightmost hop of x-forwarded-for (last trusted proxy) →
+ *           fallback.
+ */
+function getClientIp(req: Request): string {
+  const cf = req.headers.get('cf-connecting-ip');
+  if (cf) return cf.trim();
+
+  const realIp = req.headers.get('x-real-ip');
+  if (realIp) return realIp.trim();
+
+  const forwarded = req.headers.get('x-forwarded-for') ?? '';
+  if (forwarded) {
+    // Rightmost entry is set by the last trusted proxy — not client-controlled
+    const last = forwarded.split(',').pop()?.trim();
+    if (last) return last;
   }
-  entry.count += 1;
-  return entry.count > MAX_ATTEMPTS;
+
+  return 'unknown';
 }
 
 // Constant-time string comparison to prevent timing attacks
@@ -45,25 +56,64 @@ async function getSigningKey(): Promise<CryptoKey> {
   );
 }
 
+/**
+ * Persistent rate limiter backed by the database.
+ * Counts login attempts for the given IP within the last WINDOW_MINUTES.
+ * Survives edge-function cold starts.
+ */
+async function isRateLimited(
+  supabase: ReturnType<typeof createClient>,
+  ip: string,
+): Promise<boolean> {
+  const windowStart = new Date(Date.now() - WINDOW_MINUTES * 60 * 1000).toISOString();
+
+  const { count, error } = await supabase
+    .from('admin_login_attempts')
+    .select('id', { count: 'exact', head: true })
+    .eq('ip', ip)
+    .gte('attempted_at', windowStart);
+
+  if (error) {
+    console.error('rate-limit check error:', error);
+    return false; // fail open rather than block legitimate admin
+  }
+
+  return (count ?? 0) >= MAX_ATTEMPTS;
+}
+
+async function recordAttempt(
+  supabase: ReturnType<typeof createClient>,
+  ip: string,
+): Promise<void> {
+  await supabase.from('admin_login_attempts').insert({ ip });
+}
+
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
 
-  const ip = req.headers.get('x-forwarded-for') ?? 'unknown';
+  const supabase = createClient(
+    Deno.env.get('SUPABASE_URL')!,
+    Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!,
+  );
 
-  if (isRateLimited(ip)) {
-    return new Response(JSON.stringify({ error: 'Too many requests. Try again later.' }), {
-      status: 429,
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-    });
-  }
-
+  const ip = getClientIp(req);
   const authHeader = req.headers.get('authorization') ?? '';
   const rawPassword = req.headers.get('x-admin-password') ?? '';
 
-  // --- Path A: password login → issue a short-lived token ---
+  // --- Path A: password login → validate, rate-limit, issue short-lived token ---
   if (rawPassword) {
+    if (await isRateLimited(supabase, ip)) {
+      return new Response(JSON.stringify({ error: 'Too many requests. Try again later.' }), {
+        status: 429,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
+    // Record the attempt before checking so failed logins count immediately
+    await recordAttempt(supabase, ip);
+
     const adminPassword = Deno.env.get('ADMIN_PASSWORD') ?? '';
     if (!adminPassword || !safeEqual(rawPassword, adminPassword)) {
       return new Response(JSON.stringify({ error: 'Unauthorized' }), {
@@ -90,7 +140,7 @@ Deno.serve(async (req) => {
     }
   }
 
-  // --- Path B: token bearer → return emails ---
+  // --- Path B: token bearer → verify JWT and return emails ---
   if (authHeader.startsWith('Bearer ')) {
     const token = authHeader.slice(7);
     try {
@@ -105,11 +155,6 @@ Deno.serve(async (req) => {
     }
 
     try {
-      const supabase = createClient(
-        Deno.env.get('SUPABASE_URL')!,
-        Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!,
-      );
-
       const { data: emails, error } = await supabase
         .from('download_emails')
         .select('id, email, created_at')
