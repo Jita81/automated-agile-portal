@@ -9,6 +9,8 @@ const navItems = [
   { label: 'Meetings', href: '#meetings' },
   { label: 'Self-Curation', href: '#self-curation' },
   { label: 'Integrations', href: '#integrations' },
+  { label: 'Context Engineering', href: 'https://contextengineering.team/', external: true },
+  { label: 'Software Manufacturing', href: 'https://softwaremanufacturing.team/', external: true },
 ];
 
 export const Header = () => {
@@ -39,9 +41,9 @@ export const Header = () => {
 
           <nav className="hidden md:flex items-center gap-8">
             {navItems.map((item) => (
-              <a key={item.label} href={item.href} className="nav-link" onClick={(e) => handleNav(e, item.href)}>
-                {item.label}
-              </a>
+              item.external
+                ? <a key={item.label} href={item.href} className="nav-link" target="_blank" rel="noopener noreferrer">{item.label}</a>
+                : <a key={item.label} href={item.href} className="nav-link" onClick={(e) => handleNav(e, item.href)}>{item.label}</a>
             ))}
           </nav>
 
@@ -61,9 +63,9 @@ export const Header = () => {
           >
             <nav className="max-w-6xl mx-auto px-6 py-6 flex flex-col gap-5">
               {navItems.map((item) => (
-                <a key={item.label} href={item.href} className="nav-link text-base" onClick={(e) => handleNav(e, item.href)}>
-                  {item.label}
-                </a>
+                item.external
+                  ? <a key={item.label} href={item.href} className="nav-link text-base" target="_blank" rel="noopener noreferrer">{item.label}</a>
+                  : <a key={item.label} href={item.href} className="nav-link text-base" onClick={(e) => handleNav(e, item.href)}>{item.label}</a>
               ))}
             </nav>
           </motion.div>
