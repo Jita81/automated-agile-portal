@@ -35,7 +35,6 @@ export async function getLLM(onProgress?: ProgressCallback) {
     {
       progress_callback: onProgress,
       quantized: true,
-      dtype: 'q4',
     }
   );
   return llmPipeline;
