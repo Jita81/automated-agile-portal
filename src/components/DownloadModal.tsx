@@ -18,7 +18,7 @@ export const DownloadModal = ({ open, onClose }: DownloadModalProps) => {
     e.preventDefault();
     const trimmed = email.trim().toLowerCase();
 
-    // Basic email validation
+    // Client-side pre-validation (UX only; server enforces authoritative checks)
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(trimmed)) {
       setErrorMsg('Please enter a valid email address.');
@@ -32,13 +32,15 @@ export const DownloadModal = ({ open, onClose }: DownloadModalProps) => {
     setStatus('loading');
     setErrorMsg('');
 
-    const { error } = await supabase
-      .from('download_emails')
-      .insert({ email: trimmed });
+    // Route through edge function for server-side validation + rate limiting
+    const { data, error } = await supabase.functions.invoke('submit-email', {
+      body: { email: trimmed },
+    });
 
-    if (error) {
+    if (error || !data?.success) {
       setStatus('error');
-      setErrorMsg('Something went wrong. Please try again.');
+      const msg = data?.error ?? 'Something went wrong. Please try again.';
+      setErrorMsg(msg);
       return;
     }
 

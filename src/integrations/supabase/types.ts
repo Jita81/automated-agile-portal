@@ -50,6 +50,24 @@ export type Database = {
         }
         Relationships: []
       }
+      email_submit_attempts: {
+        Row: {
+          attempted_at: string
+          id: string
+          ip: string
+        }
+        Insert: {
+          attempted_at?: string
+          id?: string
+          ip: string
+        }
+        Update: {
+          attempted_at?: string
+          id?: string
+          ip?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
