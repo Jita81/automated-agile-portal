@@ -31,7 +31,7 @@ export async function getLLM(onProgress?: ProgressCallback) {
   if (llmPipeline) return llmPipeline;
   llmPipeline = await pipeline(
     'text-generation',
-    'Xenova/Qwen2.5-0.5B-Instruct',
+    'Xenova/TinyLlama-1.1B-Chat-v1.0',
     {
       progress_callback: onProgress,
       quantized: true,
