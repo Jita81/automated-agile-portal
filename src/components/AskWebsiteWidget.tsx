@@ -231,10 +231,10 @@ export function AskWebsiteWidget() {
                 <div className="flex flex-col items-center gap-3 py-10 text-center">
                   <AlertCircle size={22} strokeWidth={1.5} className="text-muted-foreground" />
                   <p className="font-mono text-xs text-muted-foreground">
-                    Local AI isn't available on this browser or device.
+                    Local AI isn't available on this browser.
                   </p>
                   <p className="text-xs text-muted-foreground max-w-xs">
-                    WebGPU is required. Try a recent version of Chrome or Edge on desktop.
+                    Please try a recent version of Chrome, Edge, or Firefox on desktop.
                   </p>
                 </div>
               )}
@@ -243,7 +243,7 @@ export function AskWebsiteWidget() {
               {widgetState === 'slow-warning' && (
                 <div className="flex flex-col gap-4 py-6 text-center items-center">
                   <AlertCircle size={22} strokeWidth={1.5} className="text-foreground/50" />
-                  <p className="font-mono text-xs text-foreground/70">Your device can run local AI, but responses may be slow.</p>
+                  <p className="font-mono text-xs text-foreground/70">No GPU acceleration detected — responses will run on CPU and may be slow.</p>
                   <button
                     onClick={handleEnable}
                     className="font-mono text-xs border border-border px-4 py-2 hover:bg-card transition-colors rounded"
