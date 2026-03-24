@@ -1,73 +1,174 @@
-# Welcome to your Lovable project
+# Automated Agile — Website
 
-## Project info
+The marketing and information website for [Automated Agile](https://automatedagile.co.uk), built on Vite + React + TypeScript + Tailwind CSS, hosted on [Lovable](https://lovable.dev), with backend functions running on [Supabase](https://supabase.com).
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+---
 
-## How can I edit this code?
+## "Ask this Website" Chat Widget
 
-There are several ways of editing your application.
+The site includes a conversational AI chat widget that lets visitors ask questions about Automated Agile and receive grounded answers from the site's content.
 
-**Use Lovable**
+**How it works:**
+- Visitor clicks "Ask this website" → types a question
+- A Supabase Edge Function (`ask-website`) receives the question
+- The function loads the full site content index (`/public/ai/index/chunks.json`)
+- It sends everything to **Groq's Llama 3.3 70B** — a free, fast, high-quality LLM
+- The model answers strictly from the site's content and returns source references
+- Rate limiting is enforced (20 questions per IP per 15 minutes)
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+**Why Groq?** The free tier provides 30 requests/minute with no credit card required. Llama 3.3 70B produces high-quality, instruction-following answers. Total cost at scale: ~$0.001 per question.
 
-Changes made via Lovable will be committed automatically to this repo.
+---
 
-**Use your preferred IDE**
+## To Activate the Chat Widget
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+The frontend code is complete and enabled. You need to complete three backend steps.
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+### Step 1 — Get a free Groq API key
 
-Follow these steps:
+1. Go to [console.groq.com](https://console.groq.com)
+2. Sign up (free, no credit card required)
+3. Navigate to **API Keys** → **Create API Key**
+4. Copy the key (it starts with `gsk_`)
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+### Step 2 — Install the Supabase CLI (if not already installed)
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+```bash
+brew install supabase/tap/supabase
+```
 
-# Step 3: Install the necessary dependencies.
-npm i
+Then link your project (you only need to do this once):
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+```bash
+supabase link --project-ref byvofziuvbqextocljwj
+```
+
+You'll be prompted for your Supabase database password. Find it in your [Supabase dashboard](https://supabase.com/dashboard/project/byvofziuvbqextocljwj/settings/database) under **Settings → Database → Database password**.
+
+### Step 3 — Set the secret and deploy
+
+Run these three commands in the repo root:
+
+```bash
+# 1. Store your Groq API key as a secure Supabase secret
+supabase secrets set GROQ_API_KEY=gsk_your_key_here
+
+# 2. Create the rate-limiting table in the database
+supabase db push
+
+# 3. Deploy the Edge Function
+supabase functions deploy ask-website
+```
+
+That's it. The widget will be live immediately on the hosted site.
+
+---
+
+## Verifying It Works
+
+After deployment, you can test the Edge Function directly:
+
+```bash
+curl -X POST https://byvofziuvbqextocljwj.supabase.co/functions/v1/ask-website \
+  -H "Content-Type: application/json" \
+  -H "apikey: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ5dm9meml1dmJxZXh0b2NsandqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM0NDcyNzcsImV4cCI6MjA4OTAyMzI3N30.RNhSbnbhirbwkj8AqvzOGTgpT1g4M8RdhUKpCUstwWM" \
+  -d '{"question": "What are the three primitives?"}'
+```
+
+You should get a JSON response with `answer`, `sources`, and `noAnswer` fields.
+
+---
+
+## Local Development
+
+```bash
+# Install dependencies
+npm install
+
+# Start the dev server (available at http://localhost:8080)
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+To test the chat widget locally against the live Edge Function, the dev server at `localhost:8080` is included in the Edge Function's allowed origins. No extra config needed — the Supabase client picks up the URL and anon key from `.env` automatically.
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+If you want to run the Edge Function locally too:
 
-**Use GitHub Codespaces**
+```bash
+supabase start              # starts local Supabase stack
+supabase functions serve    # serves all functions on localhost
+```
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+Then set `GROQ_API_KEY` in `supabase/.env.local`:
 
-## What technologies are used for this project?
+```
+GROQ_API_KEY=gsk_your_key_here
+```
 
-This project is built with:
+---
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+## Project Structure
 
-## How can I deploy this project?
+```
+├── public/
+│   └── ai/index/chunks.json     # Pre-built site content index (14 sections)
+├── src/
+│   ├── ai/
+│   │   └── answer.ts            # Client: calls the Edge Function
+│   ├── components/
+│   │   ├── AskWebsiteWidget.tsx # Chat UI widget
+│   │   └── ...                  # Other page sections
+│   ├── integrations/supabase/   # Supabase client config
+│   └── pages/Index.tsx          # Main page (widget rendered here)
+└── supabase/
+    ├── functions/
+    │   ├── ask-website/         # AI chat Edge Function (Groq + Llama 3.3 70B)
+    │   ├── submit-email/        # Download CTA email capture
+    │   └── admin-get-emails/    # Admin: retrieve captured emails
+    └── migrations/              # Database schema migrations
+```
 
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
+---
 
-## Can I connect a custom domain to my Lovable project?
+## Updating the Content Index
 
-Yes, you can!
+The chat widget answers from `public/ai/index/chunks.json`. If you update the website's content, regenerate this file to keep the AI's answers accurate.
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+Each entry in the file follows this shape:
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+```json
+{
+  "id": "unique-id",
+  "url": "/#section-anchor",
+  "page_title": "Section Title",
+  "section_heading": "Sub-heading",
+  "text": "Full text content of the section..."
+}
+```
+
+Edit the file directly to add, update, or remove sections. The Edge Function fetches the live version from the hosted site (`/ai/index/chunks.json`) on each cold start, so changes deploy automatically with the next Lovable publish.
+
+---
+
+## Tech Stack
+
+| Layer | Technology |
+|-------|-----------|
+| Frontend | Vite, React 18, TypeScript |
+| Styling | Tailwind CSS, shadcn/ui |
+| Animation | Framer Motion |
+| Backend functions | Supabase Edge Functions (Deno) |
+| Database | Supabase (PostgreSQL) |
+| AI model | Groq — Llama 3.3 70B Versatile |
+| Hosting | Lovable |
+
+---
+
+## Deploying Changes
+
+Changes pushed to `main` are automatically picked up by Lovable and deployed to the hosted site. Push to this branch (`feature/ask-website-chat`) and merge via a pull request when ready.
+
+For Edge Function changes, redeploy manually after merging:
+
+```bash
+supabase functions deploy ask-website
+```
