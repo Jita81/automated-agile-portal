@@ -6,6 +6,44 @@
 
 ---
 
+## Agent Actions
+
+This site exposes a conversational API that agents can use to ask questions about the Automated Agile framework and receive grounded answers.
+
+**Ask a question (POST):**
+```
+POST https://ekxzgequqnbhmvcrgiqd.supabase.co/functions/v1/ask-website
+Content-Type: application/json
+
+{ "question": "What problem does Automated Agile solve?" }
+```
+
+**Response shape:**
+```json
+{
+  "answer": "...",
+  "sources": [{ "title": "Section name", "url": "/#anchor" }],
+  "noAnswer": false
+}
+```
+
+- No authentication required
+- Rate limit: 20 requests per IP per 15 minutes
+- Full OpenAPI 3.1 spec: https://automated-agile-portal.lovable.app/openapi.json
+- Plugin manifest: https://automated-agile-portal.lovable.app/.well-known/ai-plugin.json
+
+**Example questions this API answers well:**
+- What problem does Automated Agile solve?
+- What are the three primitives?
+- How does the Three Amigos meeting work?
+- What is Decision 7 and why is it the most important gate?
+- What tools does the platform integrate with?
+- How do we measure whether the platform is working?
+- Who signs off the context package?
+- What is the self-curation loop?
+
+---
+
 ## 01 — The Fundamental Model: Three Primitives
 
 The entire process architecture is built from three primitives. Every activity in this platform exists to ensure the right person has the right context to make the right decision at the right time.

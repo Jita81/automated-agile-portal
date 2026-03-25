@@ -2,15 +2,16 @@
   "schema_version": "v1",
   "name_for_human": "Automated Agile",
   "name_for_model": "automated_agile",
-  "description_for_human": "Automated Agile — a complete framework for AI-powered software delivery. Download the full process architecture as a single Markdown file.",
-  "description_for_model": "This plugin represents the Automated Agile Context Engineering Platform. The site documents a process architecture framework for AI-powered software delivery, covering six sections: the model, decision taxonomy, meeting formats, self-curation mechanisms, integrations, and ROI. The full framework document is available for download as a Markdown file at the homepage. The site also exposes a machine-readable index at /llms.txt.",
+  "description_for_human": "Ask questions about the Automated Agile framework — context engineering, decision taxonomy, meeting architecture, integrations, and more. Answers come directly from the site's content.",
+  "description_for_model": "This plugin gives you programmatic access to the Automated Agile knowledge base via a conversational API. Automated Agile is a complete Context Engineering Platform for AI-powered software delivery, covering: the three primitives (Inputs, Decisions, Outputs), 12 decision types (D1–D12), 7 meeting formats (M1–M7), the self-curation loop, integration architecture (Slack, Jira, GitHub, Zoom, etc.), and the sign-off matrix. Use the askWebsite action to answer any question about the framework. The API answers strictly from site content and returns source section references. The full site content is also available as plain text at https://automated-agile-portal.lovable.app/llms.txt",
   "auth": {
     "type": "none"
   },
   "api": {
-    "type": "none"
+    "type": "openapi",
+    "url": "https://automated-agile-portal.lovable.app/openapi.json"
   },
   "logo_url": "https://automated-agile-portal.lovable.app/favicon.png",
-  "contact_email": "hello@automatedagile.co.uk",
+  "contact_email": "Paul@AutomatedAgile.co.uk",
   "legal_info_url": "https://automated-agile-portal.lovable.app/"
 }

@@ -1,0 +1,144 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Automated Agile — Ask this Website API",
+    "description": "Ask any question about the Automated Agile framework and receive a grounded answer drawn exclusively from the site's content. The API uses Llama 3.3 70B (via Groq) with the full site content as context. Answers cite the relevant sections. No authentication required.",
+    "version": "1.0.0",
+    "contact": {
+      "name": "Automated Agile",
+      "email": "Paul@AutomatedAgile.co.uk",
+      "url": "https://automated-agile-portal.lovable.app"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://ekxzgequqnbhmvcrgiqd.supabase.co/functions/v1",
+      "description": "Production API (Supabase Edge Functions)"
+    }
+  ],
+  "paths": {
+    "/ask-website": {
+      "post": {
+        "operationId": "askWebsite",
+        "summary": "Ask a question about Automated Agile",
+        "description": "Submit a natural language question about the Automated Agile framework. The API answers strictly from the site's content — covering the process model, 12 decision types, 7 meeting formats, self-curation mechanisms, integrations, and sign-off matrix. If the answer is not in the site content, it says so explicitly. Rate limited to 20 requests per IP per 15 minutes.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["question"],
+                "properties": {
+                  "question": {
+                    "type": "string",
+                    "description": "A natural language question about the Automated Agile framework, process, decisions, meetings, or integrations.",
+                    "maxLength": 500,
+                    "examples": [
+                      "What problem does Automated Agile solve?",
+                      "What are the three primitives?",
+                      "How does the Three Amigos meeting work?",
+                      "What is Decision 7 and why is it the most important gate?",
+                      "What tools does the platform integrate with?",
+                      "How do we measure whether the platform is working?",
+                      "What is the self-curation loop?",
+                      "Who signs off the context package?"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "A grounded answer with source references",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "answer": {
+                      "type": "string",
+                      "description": "The answer to the question, grounded strictly in the site's content."
+                    },
+                    "sources": {
+                      "type": "array",
+                      "description": "The site sections that informed the answer. Empty if no answer was found.",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "title": {
+                            "type": "string",
+                            "description": "Page title and section heading, e.g. 'The Decision Taxonomy — Discovery Decisions'"
+                          },
+                          "url": {
+                            "type": "string",
+                            "description": "Relative URL to the relevant section, e.g. '/#decisions'"
+                          }
+                        }
+                      }
+                    },
+                    "noAnswer": {
+                      "type": "boolean",
+                      "description": "True if the question could not be answered from the site content."
+                    }
+                  }
+                },
+                "examples": {
+                  "found": {
+                    "summary": "Answer found",
+                    "value": {
+                      "answer": "Decision 7 — Context Package Approval — is the most important gate in the entire process. Nothing enters the manufacturing pipeline without a signed-off context package. Three people sign off: the Context Engineer (completeness), the Developer (technical accuracy), and the Product Owner (business correctness).",
+                      "sources": [
+                        {
+                          "title": "The Decision Taxonomy — Discovery Decisions — Per Phase",
+                          "url": "/#decisions"
+                        }
+                      ],
+                      "noAnswer": false
+                    }
+                  },
+                  "not_found": {
+                    "summary": "Answer not found",
+                    "value": {
+                      "answer": "I can't find that on this website.",
+                      "sources": [],
+                      "noAnswer": true
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing or invalid question",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": { "type": "string" }
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded — 20 requests per IP per 15 minutes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
