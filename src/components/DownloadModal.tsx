@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Download, ArrowRight } from 'lucide-react';
-import { supabase } from '@/integrations/supabase/client';
 import { generateAutomatedAgileMarkdown } from '@/lib/generateMarkdown';
+
+const SUBMIT_EMAIL_URL =
+  'https://byvofziuvbqextocljwj.supabase.co/functions/v1/submit-email';
 
 interface DownloadModalProps {
   open: boolean;
@@ -33,9 +35,13 @@ export const DownloadModal = ({ open, onClose }: DownloadModalProps) => {
     setErrorMsg('');
 
     // Route through edge function for server-side validation + rate limiting
-    const { data, error } = await supabase.functions.invoke('submit-email', {
-      body: { email: trimmed },
+    const res = await fetch(SUBMIT_EMAIL_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: trimmed }),
     });
+    const data = await res.json();
+    const error = res.ok ? null : new Error(data?.error);
 
     if (error || !data?.success) {
       setStatus('error');

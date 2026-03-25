@@ -1,6 +1,17 @@
 import { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
 import { Lock, LogOut, Mail, Calendar } from 'lucide-react';
+
+const ADMIN_FUNCTION_URL =
+  'https://byvofziuvbqextocljwj.supabase.co/functions/v1/admin-get-emails';
+
+async function callAdminFunction(headers: Record<string, string>) {
+  const res = await fetch(ADMIN_FUNCTION_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...headers },
+  });
+  const data = await res.json();
+  return { data, error: res.ok ? null : new Error(data?.error ?? res.statusText) };
+}
 
 interface EmailEntry {
   id: string;
@@ -21,9 +32,7 @@ const AdminLogin = ({ onLogin }: { onLogin: (token: string) => void }) => {
     setError('');
 
     // Send password once — server validates and returns a short-lived signed token
-    const { data, error: fnError } = await supabase.functions.invoke('admin-get-emails', {
-      headers: { 'x-admin-password': password },
-    });
+    const { data, error: fnError } = await callAdminFunction({ 'x-admin-password': password });
 
     if (fnError || !data?.token) {
       setError('Incorrect password.');
@@ -86,9 +95,7 @@ const AdminDashboard = ({ token, onLogout }: { token: string; onLogout: () => vo
 
   useEffect(() => {
     const fetchEmails = async () => {
-      const { data, error: fnError } = await supabase.functions.invoke('admin-get-emails', {
-        headers: { 'Authorization': `Bearer ${token}` },
-      });
+      const { data, error: fnError } = await callAdminFunction({ 'Authorization': `Bearer ${token}` });
       if (fnError || data?.error) {
         if (data?.error === 'Unauthorized') {
           // Token expired — force re-login
