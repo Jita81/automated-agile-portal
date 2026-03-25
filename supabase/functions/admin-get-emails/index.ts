@@ -1,19 +1,10 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 import { create, verify, getNumericDate } from 'https://deno.land/x/djwt@v3.0.2/mod.ts';
 
-const ALLOWED_ORIGINS = [
-  'https://automated-agile-portal.lovable.app',
-  'https://id-preview--9852b81a-f584-41ef-9f13-bf871be18f33.lovable.app',
-  'https://9852b81a-f584-41ef-9f13-bf871be18f33.lovableproject.com',
-];
-
-function getCorsHeaders(req: Request): Record<string, string> {
-  const origin = req.headers.get('origin') ?? '';
-  const allowedOrigin = ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0];
+function getCorsHeaders(_req: Request): Record<string, string> {
   return {
-    'Access-Control-Allow-Origin': allowedOrigin,
+    'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-admin-password',
-    'Vary': 'Origin',
   };
 }
 
