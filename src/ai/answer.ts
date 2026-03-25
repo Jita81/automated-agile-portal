@@ -1,4 +1,5 @@
-import { supabase } from '@/integrations/supabase/client';
+const FUNCTION_URL =
+  'https://ekxzgequqnbhmvcrgiqd.supabase.co/functions/v1/ask-website';
 
 export interface AnswerResult {
   answer: string;
@@ -7,17 +8,18 @@ export interface AnswerResult {
 }
 
 export async function generateAnswer(question: string): Promise<AnswerResult> {
-  const { data, error } = await supabase.functions.invoke('ask-website', {
-    body: { question },
+  const res = await fetch(FUNCTION_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ question }),
   });
 
-  if (error) {
-    console.error('[AskWebsite] Edge function error:', error);
-    throw new Error(error.message ?? 'Failed to get answer');
-  }
+  const data = await res.json();
 
-  if (data?.error) {
-    throw new Error(data.error);
+  if (!res.ok || data?.error) {
+    const msg = data?.error ?? `Request failed (${res.status})`;
+    console.error('[AskWebsite] Edge function error:', msg);
+    throw new Error(msg);
   }
 
   return {
