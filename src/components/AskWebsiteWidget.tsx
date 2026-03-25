@@ -57,7 +57,8 @@ export function AskWebsiteWidget() {
       setMessages(prev => [...prev, assistantMsg]);
     } catch (err: any) {
       console.error('[AskWebsite] Answer generation failed:', err);
-      const errorText = err?.message?.includes('Too many')
+      // Surface the real error message from the edge function if available
+      const errorText = err?.message && err.message.length < 200
         ? err.message
         : 'Sorry, something went wrong. Please try again.';
       setMessages(prev => [
