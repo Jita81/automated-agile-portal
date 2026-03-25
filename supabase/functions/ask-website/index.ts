@@ -11,7 +11,7 @@ function getCorsHeaders(req: Request): Record<string, string> {
 
 const MAX_REQUESTS = 20;
 const WINDOW_MINUTES = 15;
-const GROQ_MODEL = 'llama-3.3-70b-versatile';
+const OPENAI_MODEL = 'gpt-4o-mini';
 const MAX_TOKENS = 800;
 
 const SYSTEM_PROMPT = `You are the website assistant for Automated Agile (automatedagile.co.uk).
@@ -59,48 +59,11 @@ async function loadChunks(): Promise<Chunk[]> {
   return cachedChunks!;
 }
 
-/**
- * Score a chunk's relevance to a question using keyword overlap.
- * Returns a number 0–N; higher = more relevant.
- */
-function scoreChunk(chunk: Chunk, questionTokens: Set<string>): number {
-  const haystack = `${chunk.page_title} ${chunk.section_heading} ${chunk.text}`.toLowerCase();
-  let score = 0;
-  for (const token of questionTokens) {
-    if (haystack.includes(token)) score++;
-  }
-  return score;
-}
-
-/**
- * Return the most relevant chunks for the question.
- * Always includes at least the top 3, capped at 6 total.
- * Falls back to all chunks if none score > 0.
- */
-function selectChunks(question: string, chunks: Chunk[], maxChunks = 6): Chunk[] {
-  const stopWords = new Set(['what', 'how', 'why', 'does', 'the', 'is', 'are', 'do', 'a', 'an', 'it', 'in', 'of', 'to', 'and', 'or', 'for', 'with', 'this', 'that', 'we', 'our']);
-  const questionTokens = new Set(
-    question.toLowerCase().replace(/[^a-z0-9\s]/g, '').split(/\s+/).filter(t => t.length > 2 && !stopWords.has(t))
-  );
-
-  const scored = chunks
-    .map(c => ({ chunk: c, score: scoreChunk(c, questionTokens) }))
-    .sort((a, b) => b.score - a.score);
-
-  const topScored = scored.slice(0, maxChunks);
-  // If nothing scored, return first maxChunks chunks as fallback
-  const allZero = topScored.every(s => s.score === 0);
-  const selected = allZero ? chunks.slice(0, maxChunks) : topScored.filter(s => s.score > 0).slice(0, maxChunks);
-
-  console.log(`[ask-website] Chunk selection: ${selected.length}/${chunks.length} chunks selected. Top scores: ${scored.slice(0, 3).map(s => `"${s.chunk.section_heading}"=${s.score}`).join(', ')}`);
-  return selected.map(s => s.chunk);
-}
-
 function buildUserMessage(question: string, chunks: Chunk[]): string {
-  const relevant = selectChunks(question, chunks);
-  const contextBlocks = relevant
+  const contextBlocks = chunks
     .map((c, i) => `[Section ${i + 1}: ${c.page_title} — ${c.section_heading}]\n${c.text}`)
     .join('\n\n');
+  console.log(`[ask-website] Sending full context: ${chunks.length} chunks`);
   return `Website context:\n${contextBlocks}\n\nQuestion: ${question}`;
 }
 
@@ -118,7 +81,7 @@ async function logToDb(
 ) {
   const { error } = await supabase.from('chat_logs').insert({
     ...data,
-    groq_model: GROQ_MODEL,
+      groq_model: OPENAI_MODEL,
   });
   if (error) {
     console.warn('[ask-website] Failed to write chat log (non-fatal):', error.message);
@@ -210,11 +173,11 @@ Deno.serve(async (req) => {
     });
   }
 
-  // --- Check Groq key ---
-  const groqKey = Deno.env.get('GROQ_API_KEY');
-  console.log(`[ask-website] GROQ_API_KEY set: ${!!groqKey}`);
-  if (!groqKey) {
-    const errMsg = 'GROQ_API_KEY not configured';
+  // --- Check OpenAI key ---
+  const openaiKey = Deno.env.get('OPENAI_API_KEY');
+  console.log(`[ask-website] OPENAI_API_KEY set: ${!!openaiKey}`);
+  if (!openaiKey) {
+    const errMsg = 'OPENAI_API_KEY not configured';
     console.error('[ask-website]', errMsg);
     await logToDb(supabase, { ip, question, error: errMsg, duration_ms: Date.now() - startTime, origin });
     return new Response(JSON.stringify({ error: 'Chat service is not configured.' }), {
@@ -223,17 +186,17 @@ Deno.serve(async (req) => {
     });
   }
 
-  // --- Call Groq ---
-  console.log(`[ask-website] Calling Groq model: ${GROQ_MODEL}`);
+  // --- Call OpenAI ---
+  console.log(`[ask-website] Calling OpenAI model: ${OPENAI_MODEL}`);
   try {
-    const groqRes = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+    const openaiRes = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
-        Authorization: `Bearer ${groqKey}`,
+        Authorization: `Bearer ${openaiKey}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: GROQ_MODEL,
+        model: OPENAI_MODEL,
         messages: [
           { role: 'system', content: SYSTEM_PROMPT },
           { role: 'user', content: buildUserMessage(question, chunks) },
@@ -243,11 +206,11 @@ Deno.serve(async (req) => {
       }),
     });
 
-    console.log(`[ask-website] Groq response status: ${groqRes.status}`);
+    console.log(`[ask-website] OpenAI response status: ${openaiRes.status}`);
 
-    if (!groqRes.ok) {
-      const errText = await groqRes.text();
-      const errMsg = `Groq API error ${groqRes.status}: ${errText}`;
+    if (!openaiRes.ok) {
+      const errText = await openaiRes.text();
+      const errMsg = `OpenAI API error ${openaiRes.status}: ${errText}`;
       console.error('[ask-website]', errMsg);
       await logToDb(supabase, { ip, question, error: errMsg, duration_ms: Date.now() - startTime, origin });
       return new Response(JSON.stringify({ error: 'AI service temporarily unavailable.' }), {
@@ -256,8 +219,8 @@ Deno.serve(async (req) => {
       });
     }
 
-    const groqData = await groqRes.json();
-    const answer = groqData.choices?.[0]?.message?.content?.trim() ?? "I can't find that on this website.";
+    const openaiData = await openaiRes.json();
+    const answer = openaiData.choices?.[0]?.message?.content?.trim() ?? "I can't find that on this website.";
     console.log(`[ask-website] Answer (${answer.length} chars): "${answer.slice(0, 100)}"`);
 
     const noAnswer =
