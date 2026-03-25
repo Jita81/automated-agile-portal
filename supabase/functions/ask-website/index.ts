@@ -59,8 +59,46 @@ async function loadChunks(): Promise<Chunk[]> {
   return cachedChunks!;
 }
 
+/**
+ * Score a chunk's relevance to a question using keyword overlap.
+ * Returns a number 0–N; higher = more relevant.
+ */
+function scoreChunk(chunk: Chunk, questionTokens: Set<string>): number {
+  const haystack = `${chunk.page_title} ${chunk.section_heading} ${chunk.text}`.toLowerCase();
+  let score = 0;
+  for (const token of questionTokens) {
+    if (haystack.includes(token)) score++;
+  }
+  return score;
+}
+
+/**
+ * Return the most relevant chunks for the question.
+ * Always includes at least the top 3, capped at 6 total.
+ * Falls back to all chunks if none score > 0.
+ */
+function selectChunks(question: string, chunks: Chunk[], maxChunks = 6): Chunk[] {
+  const stopWords = new Set(['what', 'how', 'why', 'does', 'the', 'is', 'are', 'do', 'a', 'an', 'it', 'in', 'of', 'to', 'and', 'or', 'for', 'with', 'this', 'that', 'we', 'our']);
+  const questionTokens = new Set(
+    question.toLowerCase().replace(/[^a-z0-9\s]/g, '').split(/\s+/).filter(t => t.length > 2 && !stopWords.has(t))
+  );
+
+  const scored = chunks
+    .map(c => ({ chunk: c, score: scoreChunk(c, questionTokens) }))
+    .sort((a, b) => b.score - a.score);
+
+  const topScored = scored.slice(0, maxChunks);
+  // If nothing scored, return first maxChunks chunks as fallback
+  const allZero = topScored.every(s => s.score === 0);
+  const selected = allZero ? chunks.slice(0, maxChunks) : topScored.filter(s => s.score > 0).slice(0, maxChunks);
+
+  console.log(`[ask-website] Chunk selection: ${selected.length}/${chunks.length} chunks selected. Top scores: ${scored.slice(0, 3).map(s => `"${s.chunk.section_heading}"=${s.score}`).join(', ')}`);
+  return selected.map(s => s.chunk);
+}
+
 function buildUserMessage(question: string, chunks: Chunk[]): string {
-  const contextBlocks = chunks
+  const relevant = selectChunks(question, chunks);
+  const contextBlocks = relevant
     .map((c, i) => `[Section ${i + 1}: ${c.page_title} — ${c.section_heading}]\n${c.text}`)
     .join('\n\n');
   return `Website context:\n${contextBlocks}\n\nQuestion: ${question}`;
