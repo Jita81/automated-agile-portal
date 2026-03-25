@@ -1,22 +1,7 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MessageCircle, X, Send, Loader2, ExternalLink, AlertCircle, Zap, ZapOff } from 'lucide-react';
-import { checkCapability } from '@/ai/capability';
-import { prepareIndex } from '@/ai/retrieve';
-import { retrieveTopK } from '@/ai/retrieve';
+import { MessageCircle, X, Send, Loader2, ExternalLink } from 'lucide-react';
 import { generateAnswer, AnswerResult } from '@/ai/answer';
-import { getLLM } from '@/ai/loadModel';
-import { Chunk } from '@/ai/loadIndex';
-
-// ─── Types ──────────────────────────────────────────────────────────────────
-
-type WidgetState =
-  | 'checking'       // performing capability check
-  | 'unsupported'    // WebGPU not available
-  | 'idle'           // ready to enable
-  | 'loading-model'  // downloading / loading model + index
-  | 'ready'          // ready to answer questions
-  | 'slow-warning';  // capable but software GPU detected
 
 type Message = {
   role: 'user' | 'assistant';
@@ -24,8 +9,6 @@ type Message = {
   sources?: Array<{ title: string; url: string }>;
   noAnswer?: boolean;
 };
-
-// ─── Suggested questions ────────────────────────────────────────────────────
 
 const SUGGESTED_QUESTIONS = [
   'What are the three primitives?',
@@ -35,80 +18,27 @@ const SUGGESTED_QUESTIONS = [
   'What integrations does the platform support?',
 ];
 
-// ─── Component ──────────────────────────────────────────────────────────────
-
 export function AskWebsiteWidget() {
   const [open, setOpen] = useState(false);
-  const [widgetState, setWidgetState] = useState<WidgetState>('checking');
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isAnswering, setIsAnswering] = useState(false);
-  const [loadProgress, setLoadProgress] = useState<string>('');
-  const [capabilityTier, setCapabilityTier] = useState<'fast' | 'slow' | null>(null);
 
-  const indexRef = useRef<(Chunk & { score?: number })[] | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // ── Capability check on mount ──────────────────────────────────────────
-  useEffect(() => {
-    checkCapability().then(result => {
-      if (!result.ok) {
-        setWidgetState('unsupported');
-      } else {
-        setCapabilityTier(result.tier);
-        setWidgetState(result.tier === 'slow' ? 'slow-warning' : 'idle');
-      }
-    });
-  }, []);
-
-  // ── Auto-scroll to latest message ─────────────────────────────────────
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isAnswering]);
 
-  // ── Focus input when chat opens ────────────────────────────────────────
   useEffect(() => {
-    if (open && widgetState === 'ready') {
+    if (open) {
       setTimeout(() => inputRef.current?.focus(), 100);
     }
-  }, [open, widgetState]);
+  }, [open]);
 
-  // ── Load model + index ─────────────────────────────────────────────────
-  const handleEnable = useCallback(async () => {
-    setWidgetState('loading-model');
-    setOpen(true);
-
-    try {
-      const onProgress = (p: any) => {
-        if (p?.status === 'progress' && p?.progress != null) {
-          const file = p.file?.split('/').pop() ?? 'model';
-          setLoadProgress(`Downloading ${file}: ${Math.round(p.progress)}%`);
-        } else if (p?.file) {
-          setLoadProgress(`Loading ${p.file.split('/').pop() ?? 'model'}…`);
-        }
-      };
-
-      // Step 1: load chunk index + embedder
-      setLoadProgress('Loading index and embedder…');
-      const chunks = await prepareIndex(onProgress);
-      indexRef.current = chunks;
-
-      // Step 2: preload the LLM so users see download progress here
-      setLoadProgress('Downloading AI model (first visit only, ~600 MB)…');
-      await getLLM(onProgress);
-
-      setLoadProgress('');
-      setWidgetState('ready');
-    } catch (err) {
-      console.error('[AskWebsite] Failed to load model/index:', err);
-      setWidgetState('idle'); // fall back gracefully
-    }
-  }, []);
-
-  // ── Send message ───────────────────────────────────────────────────────
   const handleSend = useCallback(async (question: string) => {
-    if (!question.trim() || isAnswering || !indexRef.current) return;
+    if (!question.trim() || isAnswering) return;
 
     const userMsg: Message = { role: 'user', text: question };
     setMessages(prev => [...prev, userMsg]);
@@ -116,8 +46,7 @@ export function AskWebsiteWidget() {
     setIsAnswering(true);
 
     try {
-      const topChunks = await retrieveTopK(question, indexRef.current as any, 6);
-      const result: AnswerResult = await generateAnswer(question, topChunks as any);
+      const result: AnswerResult = await generateAnswer(question);
 
       const assistantMsg: Message = {
         role: 'assistant',
@@ -126,11 +55,14 @@ export function AskWebsiteWidget() {
         noAnswer: result.noAnswer,
       };
       setMessages(prev => [...prev, assistantMsg]);
-    } catch (err) {
+    } catch (err: any) {
       console.error('[AskWebsite] Answer generation failed:', err);
+      const errorText = err?.message?.includes('Too many')
+        ? err.message
+        : 'Sorry, something went wrong. Please try again.';
       setMessages(prev => [
         ...prev,
-        { role: 'assistant', text: 'Sorry, something went wrong. Please try again.', noAnswer: true },
+        { role: 'assistant', text: errorText, noAnswer: true },
       ]);
     } finally {
       setIsAnswering(false);
@@ -141,11 +73,6 @@ export function AskWebsiteWidget() {
     e.preventDefault();
     handleSend(input);
   };
-
-  // ─── Render ─────────────────────────────────────────────────────────────
-
-  // Don't render button until capability check done
-  if (widgetState === 'checking') return null;
 
   return (
     <>
@@ -160,18 +87,12 @@ export function AskWebsiteWidget() {
             className="fixed bottom-24 right-5 z-50"
           >
             <button
-              onClick={() => widgetState === 'idle' || widgetState === 'slow-warning' ? handleEnable() : setOpen(true)}
+              onClick={() => setOpen(true)}
               className="group flex items-center gap-2.5 bg-foreground text-background px-4 py-2.5 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 hover:gap-3"
               aria-label="Ask this website"
             >
               <MessageCircle size={15} strokeWidth={1.5} />
               <span className="font-mono text-xs tracking-wider">Ask this website</span>
-              {widgetState === 'unsupported' && (
-                <ZapOff size={12} className="opacity-50" />
-              )}
-              {(widgetState === 'idle' || widgetState === 'slow-warning') && (
-                <Zap size={12} className="opacity-60" />
-              )}
             </button>
           </motion.div>
         )}
@@ -194,67 +115,16 @@ export function AskWebsiteWidget() {
                 <MessageCircle size={15} strokeWidth={1.5} className="text-foreground/70" />
                 <span className="font-mono text-xs tracking-wider text-foreground">Ask this website</span>
               </div>
-              <div className="flex items-center gap-3">
-                {widgetState === 'ready' && (
-                  <span className="flex items-center gap-1.5 font-mono text-xs text-foreground/40">
-                    <span className="w-1.5 h-1.5 rounded-full bg-foreground/40 inline-block" />
-                    Runs locally
-                  </span>
-                )}
-                <button onClick={() => setOpen(false)} className="text-foreground/40 hover:text-foreground transition-colors" aria-label="Close">
-                  <X size={15} strokeWidth={1.5} />
-                </button>
-              </div>
+              <button onClick={() => setOpen(false)} className="text-foreground/40 hover:text-foreground transition-colors" aria-label="Close">
+                <X size={15} strokeWidth={1.5} />
+              </button>
             </div>
 
             {/* Body */}
             <div className="flex-1 overflow-y-auto px-5 py-4 space-y-4 min-h-0">
 
-              {/* ── State: loading model ── */}
-              {widgetState === 'loading-model' && (
-                <div className="flex flex-col items-center justify-center h-40 gap-4 text-center">
-                  <Loader2 size={22} className="animate-spin text-foreground/40" strokeWidth={1.5} />
-                  <div>
-                    <p className="font-mono text-xs text-foreground/60 mb-1">
-                      {loadProgress || 'Preparing local AI…'}
-                    </p>
-                    <p className="text-xs text-muted-foreground">
-                      The model runs entirely in your browser.<br />
-                      This may take a moment on first load.
-                    </p>
-                  </div>
-                </div>
-              )}
-
-              {/* ── State: unsupported ── */}
-              {widgetState === 'unsupported' && (
-                <div className="flex flex-col items-center gap-3 py-10 text-center">
-                  <AlertCircle size={22} strokeWidth={1.5} className="text-muted-foreground" />
-                  <p className="font-mono text-xs text-muted-foreground">
-                    Local AI isn't available on this browser.
-                  </p>
-                  <p className="text-xs text-muted-foreground max-w-xs">
-                    Please try a recent version of Chrome, Edge, or Firefox on desktop.
-                  </p>
-                </div>
-              )}
-
-              {/* ── State: slow warning ── */}
-              {widgetState === 'slow-warning' && (
-                <div className="flex flex-col gap-4 py-6 text-center items-center">
-                  <AlertCircle size={22} strokeWidth={1.5} className="text-foreground/50" />
-                  <p className="font-mono text-xs text-foreground/70">No GPU acceleration detected — responses will run on CPU and may be slow.</p>
-                  <button
-                    onClick={handleEnable}
-                    className="font-mono text-xs border border-border px-4 py-2 hover:bg-card transition-colors rounded"
-                  >
-                    Enable anyway
-                  </button>
-                </div>
-              )}
-
-              {/* ── State: ready — show messages or welcome ── */}
-              {widgetState === 'ready' && messages.length === 0 && (
+              {/* Welcome state */}
+              {messages.length === 0 && (
                 <div className="space-y-4">
                   <p className="text-xs text-muted-foreground leading-relaxed">
                     Ask anything about Automated Agile. I answer only from this website's content.
@@ -274,7 +144,7 @@ export function AskWebsiteWidget() {
                 </div>
               )}
 
-              {widgetState === 'ready' && messages.map((msg, i) => (
+              {messages.map((msg, i) => (
                 <div key={i} className={`flex flex-col gap-1 ${msg.role === 'user' ? 'items-end' : 'items-start'}`}>
                   {msg.role === 'user' ? (
                     <div className="bg-foreground text-background text-xs px-3.5 py-2.5 rounded-2xl rounded-tr-sm max-w-[85%] leading-relaxed">
@@ -324,26 +194,24 @@ export function AskWebsiteWidget() {
             </div>
 
             {/* Input */}
-            {widgetState === 'ready' && (
-              <form onSubmit={handleSubmit} className="flex items-center gap-2 px-4 py-3 border-t border-border shrink-0">
-                <input
-                  ref={inputRef}
-                  value={input}
-                  onChange={e => setInput(e.target.value)}
-                  placeholder="Ask a question…"
-                  disabled={isAnswering}
-                  className="flex-1 bg-transparent text-xs outline-none text-foreground placeholder:text-muted-foreground/60 font-mono disabled:opacity-50"
-                />
-                <button
-                  type="submit"
-                  disabled={!input.trim() || isAnswering}
-                  className="text-foreground/60 hover:text-foreground transition-colors disabled:opacity-30"
-                  aria-label="Send"
-                >
-                  <Send size={13} strokeWidth={1.5} />
-                </button>
-              </form>
-            )}
+            <form onSubmit={handleSubmit} className="flex items-center gap-2 px-4 py-3 border-t border-border shrink-0">
+              <input
+                ref={inputRef}
+                value={input}
+                onChange={e => setInput(e.target.value)}
+                placeholder="Ask a question…"
+                disabled={isAnswering}
+                className="flex-1 bg-transparent text-xs outline-none text-foreground placeholder:text-muted-foreground/60 font-mono disabled:opacity-50"
+              />
+              <button
+                type="submit"
+                disabled={!input.trim() || isAnswering}
+                className="text-foreground/60 hover:text-foreground transition-colors disabled:opacity-30"
+                aria-label="Send"
+              >
+                <Send size={13} strokeWidth={1.5} />
+              </button>
+            </form>
           </motion.div>
         )}
       </AnimatePresence>
