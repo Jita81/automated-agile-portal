@@ -12,7 +12,7 @@ function getCorsHeaders(req: Request): Record<string, string> {
 const MAX_REQUESTS = 20;
 const WINDOW_MINUTES = 15;
 const GROQ_MODEL = 'llama-3.3-70b-versatile';
-const MAX_TOKENS = 400;
+const MAX_TOKENS = 800;
 
 const SYSTEM_PROMPT = `You are the website assistant for Automated Agile (automatedagile.co.uk).
 

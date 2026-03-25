@@ -11,11 +11,11 @@ type Message = {
 };
 
 const SUGGESTED_QUESTIONS = [
+  'What problem does Automated Agile solve?',
   'What are the three primitives?',
-  'What is Decision 7?',
   'How does the Three Amigos meeting work?',
   'What is the self-curation loop?',
-  'What integrations does the platform support?',
+  'How do we measure whether it\'s working?',
 ];
 
 export function AskWebsiteWidget() {
