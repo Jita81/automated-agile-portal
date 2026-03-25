@@ -1,21 +1,11 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
-const ALLOWED_ORIGINS = [
-  'https://automated-agile-portal.lovable.app',
-  'https://id-preview--9852b81a-f584-41ef-9f13-bf871be18f33.lovable.app',
-  'https://9852b81a-f584-41ef-9f13-bf871be18f33.lovableproject.com',
-  'http://localhost:8080',
-  'http://localhost:5173',
-];
-
 function getCorsHeaders(req: Request): Record<string, string> {
-  const origin = req.headers.get('origin') ?? '';
+  const origin = req.headers.get('origin') ?? 'unknown';
   console.log(`[ask-website] Origin: "${origin}"`);
-  const allowedOrigin = ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0];
   return {
-    'Access-Control-Allow-Origin': allowedOrigin,
+    'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-    'Vary': 'Origin',
   };
 }
 
