@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { SlidersHorizontal, Minus, ArrowUpRight } from 'lucide-react';
+import { SlidersHorizontal, Minus, ArrowUpRight, Sparkles } from 'lucide-react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import logo from '@/assets/logo.png';
 
 const navItems = [
@@ -19,6 +20,8 @@ const externalLinks = [
 export const Header = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
