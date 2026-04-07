@@ -107,13 +107,13 @@ export const DownloadModal = ({ open, onClose }: DownloadModalProps) => {
             {status !== 'success' ? (
               <>
                 <p className="font-mono text-xs tracking-widest uppercase text-muted-foreground mb-4">
-                  Download
+                  Closed Beta Registration
                 </p>
                 <h2 className="font-serif text-2xl md:text-3xl text-foreground font-normal mb-3">
-                  Process Architecture
+                  Join the Closed Beta
                 </h2>
                 <p className="prose-editorial text-sm mb-8 max-w-none">
-                  Enter your email to download the full Automated Agile framework as a single Markdown file — all six sections, every decision type, every meeting format.
+                  Register for early access to Athena and the Automated Agile platform. You'll also receive the full process architecture as a Markdown download.
                 </p>
 
                 <form onSubmit={handleSubmit} className="space-y-4">
@@ -150,26 +150,26 @@ export const DownloadModal = ({ open, onClose }: DownloadModalProps) => {
                     ) : (
                       <>
                         <Download size={14} strokeWidth={1.5} />
-                        <span className="font-mono text-xs tracking-widest uppercase">Download Markdown</span>
+                        <span className="font-mono text-xs tracking-widest uppercase">Register &amp; Download</span>
                       </>
                     )}
                   </button>
                 </form>
 
                 <p className="font-mono text-xs text-muted-foreground/50 mt-5">
-                  Your email is stored securely and never shared.
+                  Your email registers you for the Closed Beta and is stored securely. We'll never share it.
                 </p>
               </>
             ) : (
               <div className="py-4">
                 <p className="font-mono text-xs tracking-widest uppercase text-muted-foreground mb-4">
-                  Download started
+                  You're registered
                 </p>
                 <h2 className="font-serif text-2xl md:text-3xl text-foreground font-normal mb-4">
-                  Your file is downloading.
+                  Welcome to the Closed Beta.
                 </h2>
                 <p className="prose-editorial text-sm mb-8 max-w-none">
-                  The full process architecture document has been saved to your device as a Markdown file.
+                  Your context file is downloading. We'll be in touch as Athena moves towards Beta.
                 </p>
                 <button onClick={handleClose} className="btn-outline inline-flex items-center gap-3">
                   <ArrowRight size={14} strokeWidth={1.5} />
