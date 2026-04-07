@@ -29,7 +29,7 @@ export const DownloadContextFAB = ({ onOpen }: DownloadContextFABProps) => {
         >
           <FileDown size={14} strokeWidth={1.5} className="shrink-0" />
           <span className="font-mono text-[10px] tracking-widest uppercase leading-none">
-            Download Context
+            Register for Closed Beta &amp; Download Context
           </span>
         </motion.button>
       )}
