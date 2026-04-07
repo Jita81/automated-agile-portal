@@ -72,6 +72,17 @@ export const Header = () => {
                 <ArrowUpRight size={10} strokeWidth={1.5} className="opacity-50" />
               </a>
             ))}
+
+            {/* Athena CTA */}
+            <span className="w-px h-4 bg-border" aria-hidden="true" />
+            <a
+              href="/athena"
+              onClick={(e) => { e.preventDefault(); navigate('/athena'); }}
+              className="inline-flex items-center gap-1.5 font-mono text-xs tracking-wide uppercase bg-foreground text-background px-3 py-1.5 hover:bg-foreground/90 transition-colors"
+            >
+              <Sparkles size={10} strokeWidth={1.5} />
+              Meet Athena
+            </a>
           </nav>
 
           <button onClick={() => setMobileOpen(!mobileOpen)} className="md:hidden p-1 text-foreground/70 hover:text-foreground" aria-label="Toggle menu">
