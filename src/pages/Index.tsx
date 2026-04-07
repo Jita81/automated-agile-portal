@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Header } from '@/components/Header';
 import { Hero } from '@/components/Hero';
 import { VisionSection } from '@/components/VisionSection';
@@ -6,15 +7,16 @@ import { ProblemSection } from '@/components/ProblemSection';
 import { SolutionSection } from '@/components/SolutionSection';
 import { HowItWorksSection } from '@/components/HowItWorksSection';
 import { ROISection } from '@/components/ROISection';
-import { AthenaSection } from '@/components/AthenaSection';
 import { ContactSection } from '@/components/ContactSection';
 import { Footer } from '@/components/Footer';
 import { DownloadModal } from '@/components/DownloadModal';
 import { DownloadContextFAB } from '@/components/DownloadContextFAB';
 import { AskWebsiteWidget } from '@/components/AskWebsiteWidget';
+import { AthenaBanner } from '@/components/AthenaBanner';
 
 const Index = () => {
   const [modalOpen, setModalOpen] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <main className="min-h-screen bg-background text-foreground">
@@ -26,7 +28,7 @@ const Index = () => {
         <SolutionSection />
         <HowItWorksSection />
         <ROISection />
-        <AthenaSection />
+        <AthenaBanner onNavigate={() => navigate('/athena')} />
         <ContactSection />
         <Footer onDownloadClick={() => setModalOpen(true)} />
       </div>

@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { SlidersHorizontal, Minus, ArrowUpRight } from 'lucide-react';
+import { SlidersHorizontal, Minus, ArrowUpRight, Sparkles } from 'lucide-react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import logo from '@/assets/logo.png';
 
 const navItems = [
@@ -19,6 +20,8 @@ const externalLinks = [
 export const Header = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -29,15 +32,19 @@ export const Header = () => {
   const handleNav = useCallback((e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault();
     setMobileOpen(false);
+    if (location.pathname !== '/') {
+      navigate('/' + href);
+      return;
+    }
     const el = document.getElementById(href.replace('#', ''));
     if (el) setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'start' }), 80);
-  }, []);
+  }, [location.pathname, navigate]);
 
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-background/95 backdrop-blur-sm border-b border-border' : ''}`}>
       <div className="max-w-7xl mx-auto px-6 lg:px-10">
         <div className="flex items-center justify-between h-16 gap-8">
-          <a href="#" className="flex items-center gap-3 group shrink-0">
+          <a href="/" onClick={(e) => { e.preventDefault(); navigate('/'); }} className="flex items-center gap-3 group shrink-0">
             <img src={logo} alt="Automated Agile" className="h-7 w-auto opacity-80 group-hover:opacity-100 transition-opacity" />
             <span className="font-mono text-xs tracking-widest uppercase text-foreground/80">Automated Agile</span>
           </a>
@@ -65,6 +72,17 @@ export const Header = () => {
                 <ArrowUpRight size={10} strokeWidth={1.5} className="opacity-50" />
               </a>
             ))}
+
+            {/* Athena CTA */}
+            <span className="w-px h-4 bg-border" aria-hidden="true" />
+            <a
+              href="/athena"
+              onClick={(e) => { e.preventDefault(); navigate('/athena'); }}
+              className="inline-flex items-center gap-1.5 font-mono text-xs tracking-wide uppercase bg-foreground text-background px-3 py-1.5 hover:bg-foreground/90 transition-colors"
+            >
+              <Sparkles size={10} strokeWidth={1.5} />
+              Meet Athena
+            </a>
           </nav>
 
           <button onClick={() => setMobileOpen(!mobileOpen)} className="md:hidden p-1 text-foreground/70 hover:text-foreground" aria-label="Toggle menu">
@@ -100,6 +118,15 @@ export const Header = () => {
                   <ArrowUpRight size={11} strokeWidth={1.5} className="opacity-50" />
                 </a>
               ))}
+              <span className="h-px w-full bg-border" aria-hidden="true" />
+              <a
+                href="/athena"
+                onClick={(e) => { e.preventDefault(); setMobileOpen(false); navigate('/athena'); }}
+                className="inline-flex items-center gap-2 font-mono text-xs tracking-wide uppercase bg-foreground text-background px-4 py-2.5 hover:bg-foreground/90 transition-colors w-fit"
+              >
+                <Sparkles size={12} strokeWidth={1.5} />
+                Meet Athena
+              </a>
             </nav>
           </motion.div>
         )}
