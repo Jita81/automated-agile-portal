@@ -118,6 +118,15 @@ export const Header = () => {
                   <ArrowUpRight size={11} strokeWidth={1.5} className="opacity-50" />
                 </a>
               ))}
+              <span className="h-px w-full bg-border" aria-hidden="true" />
+              <a
+                href="/athena"
+                onClick={(e) => { e.preventDefault(); setMobileOpen(false); navigate('/athena'); }}
+                className="inline-flex items-center gap-2 font-mono text-xs tracking-wide uppercase bg-foreground text-background px-4 py-2.5 hover:bg-foreground/90 transition-colors w-fit"
+              >
+                <Sparkles size={12} strokeWidth={1.5} />
+                Meet Athena
+              </a>
             </nav>
           </motion.div>
         )}
