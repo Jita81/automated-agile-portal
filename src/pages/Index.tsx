@@ -6,6 +6,7 @@ import { ProblemSection } from '@/components/ProblemSection';
 import { SolutionSection } from '@/components/SolutionSection';
 import { HowItWorksSection } from '@/components/HowItWorksSection';
 import { ROISection } from '@/components/ROISection';
+import { AthenaSection } from '@/components/AthenaSection';
 import { ContactSection } from '@/components/ContactSection';
 import { Footer } from '@/components/Footer';
 import { DownloadModal } from '@/components/DownloadModal';
@@ -25,6 +26,7 @@ const Index = () => {
         <SolutionSection />
         <HowItWorksSection />
         <ROISection />
+        <AthenaSection />
         <ContactSection />
         <Footer onDownloadClick={() => setModalOpen(true)} />
       </div>
