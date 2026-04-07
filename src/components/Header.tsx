@@ -32,15 +32,19 @@ export const Header = () => {
   const handleNav = useCallback((e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault();
     setMobileOpen(false);
+    if (location.pathname !== '/') {
+      navigate('/' + href);
+      return;
+    }
     const el = document.getElementById(href.replace('#', ''));
     if (el) setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'start' }), 80);
-  }, []);
+  }, [location.pathname, navigate]);
 
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-background/95 backdrop-blur-sm border-b border-border' : ''}`}>
       <div className="max-w-7xl mx-auto px-6 lg:px-10">
         <div className="flex items-center justify-between h-16 gap-8">
-          <a href="#" className="flex items-center gap-3 group shrink-0">
+          <a href="/" onClick={(e) => { e.preventDefault(); navigate('/'); }} className="flex items-center gap-3 group shrink-0">
             <img src={logo} alt="Automated Agile" className="h-7 w-auto opacity-80 group-hover:opacity-100 transition-opacity" />
             <span className="font-mono text-xs tracking-widest uppercase text-foreground/80">Automated Agile</span>
           </a>
