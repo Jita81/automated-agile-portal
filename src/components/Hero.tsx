@@ -9,6 +9,10 @@ export const Hero = () => {
         <img
           src={heroBackground}
           alt="Context Engineering Platform"
+          width={1920}
+          height={1080}
+          fetchPriority="high"
+          decoding="async"
           className="w-full h-full object-cover"
           style={{ filter: 'sepia(30%) brightness(0.45)' }}
         />

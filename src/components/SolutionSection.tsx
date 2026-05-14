@@ -115,7 +115,7 @@ export const SolutionSection = () => {
           ].map((item) => (
             <div key={item.label} className="bg-background p-8 lg:p-10">
               <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground mb-3">{item.label}</p>
-              <h4 className="font-serif text-xl text-foreground font-normal mb-3">{item.heading}</h4>
+              <h3 className="font-serif text-xl text-foreground font-normal mb-3">{item.heading}</h3>
               <p className="prose-editorial text-sm">{item.body}</p>
             </div>
           ))}
@@ -155,7 +155,7 @@ export const SolutionSection = () => {
 
               <div>
                 <div className="flex flex-col sm:flex-row sm:items-baseline gap-3 mb-6">
-                  <h4 className="font-serif text-2xl md:text-3xl text-foreground font-normal">{m.title}</h4>
+                  <h3 className="font-serif text-2xl md:text-3xl text-foreground font-normal">{m.title}</h3>
                   <span className="font-mono text-xs text-muted-foreground">{m.frequency}</span>
                 </div>
 
