@@ -201,6 +201,7 @@ export function AskWebsiteWidget() {
                 value={input}
                 onChange={e => setInput(e.target.value)}
                 placeholder="Ask a question…"
+                aria-label="Ask a question"
                 disabled={isAnswering}
                 className="flex-1 bg-transparent text-xs outline-none text-foreground placeholder:text-muted-foreground/60 font-mono disabled:opacity-50"
               />

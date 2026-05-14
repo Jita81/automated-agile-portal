@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { Lock, LogOut, Mail, Calendar } from 'lucide-react';
 
 const ADMIN_FUNCTION_URL =
@@ -197,8 +198,17 @@ const Admin = () => {
     setToken(null);
   };
 
-  if (!token) return <AdminLogin onLogin={handleLogin} />;
-  return <AdminDashboard token={token} onLogout={handleLogout} />;
+  return (
+    <>
+      <Helmet>
+        <title>Admin — Automated Agile</title>
+        <meta name="description" content="Internal admin dashboard for Automated Agile." />
+        <meta name="robots" content="noindex, nofollow" />
+        <link rel="canonical" href="https://automatedagile.co.uk/admin" />
+      </Helmet>
+      {!token ? <AdminLogin onLogin={handleLogin} /> : <AdminDashboard token={token} onLogout={handleLogout} />}
+    </>
+  );
 };
 
 export default Admin;

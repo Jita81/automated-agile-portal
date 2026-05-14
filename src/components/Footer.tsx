@@ -32,6 +32,7 @@ export const Footer = ({ onDownloadClick }: FooterProps) => {
               href="https://www.linkedin.com/company/automatedagile/"
               target="_blank"
               rel="noopener noreferrer"
+              aria-label="Automated Agile on LinkedIn"
               className="text-muted-foreground hover:text-foreground transition-colors"
             >
               <Link size={14} strokeWidth={1.5} />

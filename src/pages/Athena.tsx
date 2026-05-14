@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
@@ -10,6 +11,24 @@ const Athena = () => {
 
   return (
     <main className="min-h-screen bg-background text-foreground">
+      <Helmet>
+        <title>Meet Athena — Automated Agile Facilitator</title>
+        <meta name="description" content="Athena is the Automated Agile facilitator — currently in Alpha, Beta by end of month. Register for the closed beta to get early access." />
+        <link rel="canonical" href="https://automatedagile.co.uk/athena" />
+        <meta property="og:title" content="Meet Athena — Automated Agile Facilitator" />
+        <meta property="og:description" content="Athena is the Automated Agile facilitator. Register for the closed beta to get early access." />
+        <meta property="og:url" content="https://automatedagile.co.uk/athena" />
+        <meta property="og:type" content="product" />
+        <meta property="og:image" content="https://automatedagile.co.uk/favicon.png" />
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Product",
+          "name": "Athena",
+          "description": "Automated Agile facilitator. AI-powered ceremony facilitation for software delivery teams. Currently in Alpha.",
+          "brand": { "@type": "Brand", "name": "Automated Agile" },
+          "url": "https://automatedagile.co.uk/athena"
+        })}</script>
+      </Helmet>
       <Header />
 
       {/* Simple coming soon page */}

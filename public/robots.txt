@@ -1,4 +1,4 @@
-# robots.txt — automated-agile-portal.lovable.app
+# robots.txt — automatedagile.co.uk
 # All crawlers welcome. AI agents: see /llms.txt and /openapi.json
 
 User-agent: *
@@ -60,4 +60,4 @@ Allow: /
 User-agent: Meta-ExternalFetcher
 Allow: /
 
-Sitemap: https://automated-agile-portal.lovable.app/sitemap.xml
+Sitemap: https://automatedagile.co.uk/sitemap.xml
