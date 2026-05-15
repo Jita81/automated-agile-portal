@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { ArrowRight, Sparkles } from 'lucide-react';
+import { Calendar, Sparkles } from 'lucide-react';
 
 interface AthenaBannerProps {
   onNavigate: () => void;
@@ -22,10 +22,10 @@ export const AthenaBanner = ({ onNavigate }: AthenaBannerProps) => {
               Coming Soon — Closed Alpha
             </div>
             <h2 className="font-serif text-3xl md:text-4xl font-normal text-foreground leading-tight mb-3">
-              Meet Athena
+              Athena
             </h2>
             <p className="prose-editorial text-sm max-w-lg">
-              Your AI-powered Automated Agile facilitator. Context-aware intelligence for stand-ups, retrospectives, and decision-making.
+              Your AI-powered Automated Agile facilitator. See her in action and book a demo for early access.
             </p>
           </div>
 
@@ -33,8 +33,8 @@ export const AthenaBanner = ({ onNavigate }: AthenaBannerProps) => {
             onClick={onNavigate}
             className="btn-primary inline-flex items-center gap-3 shrink-0 self-start md:self-center"
           >
-            <ArrowRight size={14} strokeWidth={1.5} />
-            <span className="font-mono text-xs tracking-widest uppercase">Learn More</span>
+            <Calendar size={14} strokeWidth={1.5} />
+            <span className="font-mono text-xs tracking-widest uppercase">Book a Demo</span>
           </button>
         </motion.div>
       </div>
