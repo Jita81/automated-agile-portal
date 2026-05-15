@@ -17,7 +17,6 @@ import { AthenaBanner } from '@/components/AthenaBanner';
 
 const Index = () => {
   const [modalOpen, setModalOpen] = useState(false);
-  const [demoModalOpen, setDemoModalOpen] = useState(false);
   const navigate = useNavigate();
 
   return (
@@ -50,13 +49,12 @@ const Index = () => {
         <SolutionSection />
         <HowItWorksSection />
         <ROISection />
-        <AthenaBanner onBookDemo={() => setDemoModalOpen(true)} />
+        <AthenaBanner onNavigate={() => navigate('/athena')} />
         <ContactSection />
         <Footer onDownloadClick={() => setModalOpen(true)} />
       </div>
       <DownloadContextFAB onOpen={() => setModalOpen(true)} />
       <DownloadModal open={modalOpen} onClose={() => setModalOpen(false)} />
-      <DownloadModal open={demoModalOpen} onClose={() => setDemoModalOpen(false)} variant="demo" />
       <AskWebsiteWidget />
     </main>
   );

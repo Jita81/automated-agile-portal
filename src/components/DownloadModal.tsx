@@ -9,11 +9,9 @@ const SUBMIT_EMAIL_URL =
 interface DownloadModalProps {
   open: boolean;
   onClose: () => void;
-  variant?: 'download' | 'demo';
 }
 
-export const DownloadModal = ({ open, onClose, variant = 'download' }: DownloadModalProps) => {
-  const isDemo = variant === 'demo';
+export const DownloadModal = ({ open, onClose }: DownloadModalProps) => {
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [errorMsg, setErrorMsg] = useState('');
@@ -52,19 +50,17 @@ export const DownloadModal = ({ open, onClose, variant = 'download' }: DownloadM
       return;
     }
 
-    if (!isDemo) {
-      // Trigger download
-      const content = generateAutomatedAgileMarkdown();
-      const blob = new Blob([content], { type: 'text/markdown;charset=utf-8' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'automated-agile-process-architecture.md';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-    }
+    // Trigger download
+    const content = generateAutomatedAgileMarkdown();
+    const blob = new Blob([content], { type: 'text/markdown;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'automated-agile-process-architecture.md';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
 
     setStatus('success');
   };
@@ -111,15 +107,13 @@ export const DownloadModal = ({ open, onClose, variant = 'download' }: DownloadM
             {status !== 'success' ? (
               <>
                 <p className="font-mono text-xs tracking-widest uppercase text-muted-foreground mb-4">
-                  {isDemo ? 'Book a Demo' : 'Closed Beta Registration'}
+                  Closed Beta Registration
                 </p>
                 <h2 className="font-serif text-2xl md:text-3xl text-foreground font-normal mb-3">
-                  {isDemo ? 'See Athena on your context.' : 'Join the Closed Beta'}
+                  Join the Closed Beta
                 </h2>
                 <p className="prose-editorial text-sm mb-8 max-w-none">
-                  {isDemo
-                    ? "Leave your email and we'll be in touch to schedule a personalised demo of Athena."
-                    : "Register for early access to Athena and the Automated Agile platform. You'll also receive the full process architecture as a Markdown download."}
+                  Register for early access to Athena and the Automated Agile platform. You'll also receive the full process architecture as a Markdown download.
                 </p>
 
                 <form onSubmit={handleSubmit} className="space-y-4">
@@ -152,11 +146,11 @@ export const DownloadModal = ({ open, onClose, variant = 'download' }: DownloadM
                     className="btn-primary w-full justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {status === 'loading' ? (
-                      <span className="font-mono text-xs tracking-widest">Submitting...</span>
+                      <span className="font-mono text-xs tracking-widest">Preparing...</span>
                     ) : (
                       <>
                         <Download size={14} strokeWidth={1.5} />
-                        <span className="font-mono text-xs tracking-widest uppercase">{isDemo ? 'Request Demo' : 'Register & Download'}</span>
+                        <span className="font-mono text-xs tracking-widest uppercase">Register &amp; Download</span>
                       </>
                     )}
                   </button>
@@ -169,15 +163,13 @@ export const DownloadModal = ({ open, onClose, variant = 'download' }: DownloadM
             ) : (
               <div className="py-4">
                 <p className="font-mono text-xs tracking-widest uppercase text-muted-foreground mb-4">
-                  {isDemo ? "We'll be in touch" : "You're registered"}
+                  You're registered
                 </p>
                 <h2 className="font-serif text-2xl md:text-3xl text-foreground font-normal mb-4">
-                  {isDemo ? 'Thanks — demo request received.' : 'Welcome to the Closed Beta.'}
+                  Welcome to the Closed Beta.
                 </h2>
                 <p className="prose-editorial text-sm mb-8 max-w-none">
-                  {isDemo
-                    ? "We'll reach out shortly to schedule your Athena demo."
-                    : "Your context file is downloading. We'll be in touch as Athena moves towards Beta."}
+                  Your context file is downloading. We'll be in touch as Athena moves towards Beta.
                 </p>
                 <button onClick={handleClose} className="btn-outline inline-flex items-center gap-3">
                   <ArrowRight size={14} strokeWidth={1.5} />
