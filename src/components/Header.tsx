@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { SlidersHorizontal, Minus, ArrowUpRight, Sparkles } from 'lucide-react';
+import { SlidersHorizontal, Minus, ArrowUpRight, Calendar } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import logo from '@/assets/logo.png';
 
@@ -80,8 +80,8 @@ export const Header = () => {
               onClick={(e) => { e.preventDefault(); navigate('/athena'); }}
               className="inline-flex items-center gap-1.5 font-mono text-xs tracking-wide uppercase bg-foreground text-background px-3 py-1.5 hover:bg-foreground/90 transition-colors"
             >
-              <Sparkles size={10} strokeWidth={1.5} />
-              Meet Athena
+              <Calendar size={10} strokeWidth={1.5} />
+              Book a Demo
             </a>
           </nav>
 
@@ -124,8 +124,8 @@ export const Header = () => {
                 onClick={(e) => { e.preventDefault(); setMobileOpen(false); navigate('/athena'); }}
                 className="inline-flex items-center gap-2 font-mono text-xs tracking-wide uppercase bg-foreground text-background px-4 py-2.5 hover:bg-foreground/90 transition-colors w-fit"
               >
-                <Sparkles size={12} strokeWidth={1.5} />
-                Meet Athena
+                <Calendar size={12} strokeWidth={1.5} />
+                Book a Demo
               </a>
             </nav>
           </motion.div>
